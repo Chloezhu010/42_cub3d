@@ -3,36 +3,37 @@ NAME = cub3D
 
 # dir
 SRC_DIR = ./src
+PARSER_DIR = $(SRC_DIR)/parsing
 LIBFT_DIR = $(SRC_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a
-MLX_DIR = ./minilibx-linux
-MLX = $(MLX_DIR)/libmlx.a
+# MLX_DIR = ./minilibx-linux
+# MLX = $(MLX_DIR)/libmlx.a
 
 # compiler & flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lz
+# MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lz
 
 # main src files
-SRC = map.c map_validate.c map_floodfill.c init.c render.c movement.c movement_key.c main_solong.c cleanup.c
+SRC = $(PARSER_DIR)/parsing.c
 OBJ = $(SRC:.c=.o)
 
 # include dir
-INC = -I./incl -I$(SRC_DIR)/libft -I$(MLX_DIR)
+INC = -I./incl -I$(SRC_DIR)/libft #-I$(MLX_DIR)
 
 
 # fules
-all: $(NAME)
+all: $(LIBFT) $(NAME)
 
 # build libft first
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
-# make mlx
-$(MLX):
-	make -C $(MLX_DIR)
+# # make mlx
+# $(MLX):
+# 	make -C $(MLX_DIR)
 
-$(NAME): $(MLX) $(LIBFT) $(OBJ)
+$(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -L$(LIBFT_DIR) -lft $(MLX_FLAGS)
 
 %.o: %.c
@@ -41,12 +42,10 @@ $(NAME): $(MLX) $(LIBFT) $(OBJ)
 clean:
 	rm -f $(OBJ)
 	make -C $(LIBFT_DIR) clean
-	make -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
 	make -C $(LIBFT_DIR) fclean
-	make -C $(MLX_DIR) fclean
 
 re: fclean all
 
