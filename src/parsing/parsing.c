@@ -6,11 +6,22 @@
 /*   By: chloe <chloe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:59:11 by czhu              #+#    #+#             */
-/*   Updated: 2025/04/15 19:57:57 by chloe            ###   ########.fr       */
+/*   Updated: 2025/04/15 22:05:42 by chloe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/cub3D.h"
+
+/* check if a char is a space
+    - return 1 if it's a space
+    - return 0 if not
+*/
+int is_space(char c)
+{
+    if (c == ' ' || c == '\t' || c == '\v')
+        return (1);
+    return (0);
+}
 
 /* check if the file is in .cub 
     - return 1 if in .cub
@@ -26,6 +37,46 @@ int check_file_extension(char *filename)
     return (1);
 }
 
+/* check if the RGB color of floor/ceiling is right
+    - return 1 if valid
+    - return 0 if not
+*/
+int is_valid_rgb(char *line)
+{
+    int i;
+    int count;
+    int value;
+
+    i = 0;
+    count = 0;
+    /* skip F or C or space */
+    while (line[i] && (line[i] == 'F' || line[i] == 'C' || is_space(line[i])))
+        i++;
+    while (line[i])
+    {
+        while (is_space(line[i]))
+            i++;
+        /* check if it's a digit */
+        if (!ft_isdigit(line[i]) && line[i] != ',')
+            return (0);
+        /* parse the rgb value */
+        if (ft_isdigit(line[i]))
+        {
+            value = ft_atoi(&line[i]);
+            /* check if the value is in the range 0-255 */
+            if (value < 0 || value > 255)
+                return (0);
+            count++;
+            while (line[i] && ft_isdigit(line[i]))
+                i++;
+        }
+        else
+            i++;
+    }
+    /* check if have 3 valid values for RGB */
+    return (count == 3);
+}
+
 /* check if a line is part of the map grid
     - return 0 if empty line or invalid
     - return 1 if it's part of the map line
@@ -36,7 +87,7 @@ int is_map_line(char *line)
 
     i = 0;
     /* skip the space */
-    while (line[i] && line[i] == ' ')
+    while (line[i] && is_space(line[i]))
         i++;
     /* if empty line */
     if (!line[i])
@@ -105,8 +156,6 @@ int check_map_component(char *file_path)
         && has_floor && has_celling && has_map);
 }
 
-/* check if F/C's color is right */
-
 /* check map is valid */
 
 /* check NSWE has the right texture */
@@ -122,10 +171,30 @@ int check_map_component(char *file_path)
 //     printf("%d\n", check_file_extension(s2));
 // }
 
-// test check_map_component
-int main(int ac, char **av)
+// test is_valid_rgb
+int main()
 {
-    (void)ac;
-
-    printf("%d\n", check_map_component(av[1]));
+    char *line1 = "F 20,20,-20";
+    char *line2 = "C 200,200,200";
+    char *line3 = "G 200,200,200";
+    char *line4 = "C 200,200,";
+    char *line5 = "C ,,,";
+    char *line6 = "      F      17,    38,     64";
+    char *line7 = "C 200,          200,200";
+    
+    printf("%d\n", is_valid_rgb(line1));
+    printf("%d\n", is_valid_rgb(line2));
+    printf("%d\n", is_valid_rgb(line3));
+    printf("%d\n", is_valid_rgb(line4));
+    printf("%d\n", is_valid_rgb(line5));
+    printf("%d\n", is_valid_rgb(line6));
+    printf("%d\n", is_valid_rgb(line7));
 }
+
+// // test check_map_component
+// int main(int ac, char **av)
+// {
+//     (void)ac;
+
+//     printf("%d\n", check_map_component(av[1]));
+// }
