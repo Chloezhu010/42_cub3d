@@ -15,7 +15,9 @@ CFLAGS = -Wall -Wextra -Werror
 # MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lz
 
 # main src files
-SRC = $(PARSER_DIR)/parsing.c
+SRC = $(PARSER_DIR)/map_validation.c \
+		$(PARSER_DIR)/map_validation_utils.c \
+		$(PARSER_DIR)/map_check.c
 OBJ = $(SRC:.c=.o)
 
 # include dir

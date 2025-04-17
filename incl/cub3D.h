@@ -10,13 +10,32 @@
 # include "../src/libft/libft.h"
 // # include "../minilibx-linux/mlx.h"
 
+/* component for map validation */
+typedef struct s_component
+{
+    int has_north;
+    int has_south;
+    int has_west;
+    int has_east;
+    int has_floor;
+    int has_ceiling;
+    int has_map;
+    int map_started;
+    int empty_after_map;
+    int invalid;
+}   t_component;
+
+/* map data */
 typedef struct s_map
 {
     char    **grip;
     int     width;
     int     heigth;
+    int     player_x;
+    int     player_y;
 }   t_map;
 
+/* texture data */
 typedef struct s_texture
 {
     char    *north;
@@ -27,6 +46,7 @@ typedef struct s_texture
     int     celling_color;
 }   t_texture;
 
+/* player data */
 typedef struct s_player
 {
     double  pos_x;
@@ -35,7 +55,15 @@ typedef struct s_player
     double  dir_y;
 }   t_player;
 
-/* parsing & validation */
+/* map validation utlis */
+int is_space(char c);
+int is_valid_rgb(char *line);
+int check_file_extension(char *filename);
+int check_texture_extension(char *texture);
+
+/* map check */
+int is_map_line(char *line);
+int is_empty_line(char *line);
 
 /* raycasting */
 
