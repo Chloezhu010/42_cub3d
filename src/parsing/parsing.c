@@ -6,7 +6,7 @@
 /*   By: chloe <chloe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:59:11 by czhu              #+#    #+#             */
-/*   Updated: 2025/04/15 22:05:42 by chloe            ###   ########.fr       */
+/*   Updated: 2025/04/17 18:09:39 by chloe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,25 @@ int is_map_line(char *line)
     /* if the line contains invalid char */
     while (line[i])
     {
-        if (!ft_strchr("01NSEW", line[i]))
+        if (!ft_strchr("01NSEW ", line[i]))
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
+/* helper function to check if a line is empty
+    - return 1 if it's empty line
+    - return 0 if not
+*/
+int is_empty_line(char *line)
+{
+    int i;
+
+    i = 0;
+    while (line[i])
+    {
+        if (!is_space(line[i]) && line[i] != '\n')
             return (0);
         i++;
     }
@@ -105,6 +123,7 @@ int is_map_line(char *line)
 /* check map if it
     - can open properly
     - has all the components: NSWE, FC, map
+    - return 1 if valid, return 0 if not
 */
 int check_map_component(char *file_path)
 {
@@ -117,6 +136,9 @@ int check_map_component(char *file_path)
     int has_floor;
     int has_celling;
     int has_map;
+    int map_started;
+    int emtpy_after_map;
+    int invalid_after_map;
 
     has_north = 0;
     has_south = 0;
@@ -125,6 +147,9 @@ int check_map_component(char *file_path)
     has_floor = 0;
     has_celling = 0;
     has_map = 0;
+    map_started = 0;
+    emtpy_after_map = 0;
+    invalid_after_map = 0;
     fd = open(file_path, O_RDONLY);
     if (fd < 0)
         return (0);
@@ -132,33 +157,62 @@ int check_map_component(char *file_path)
     line = get_next_line(fd);
     while (line)
     {
-        /* chekc NSWE FC */
-        if (ft_strnstr(line, "NO ", 3))
-            has_north = 1;
-        else if (ft_strnstr(line, "SO ", 3))
-            has_south = 1;
-        else if (ft_strnstr(line, "WE ", 3))
-            has_west = 1;
-        else if (ft_strnstr(line, "EA ", 3))
-            has_east = 1;
-        else if (ft_strnstr(line, "F ", 2))
-            has_floor = 1;
-        else if (ft_strnstr(line, "C ", 2))
-            has_celling = 1;
+        /* skip empty line */
+        if (is_empty_line(line))
+        {
+            /* if map already started and see the empty line, flag it */
+            if (map_started)
+                emtpy_after_map = 1;
+            free(line);
+            line = get_next_line(fd);
+            continue ;
+        }
         /* check map */
         else if (is_map_line(line))
+        {
             has_map = 1;
+            /* if see map content, then empty line, then map content, invalid */
+            if (map_started && emtpy_after_map)
+                invalid_after_map = 1;
+            map_started = 1;
+        }
+        /* if map has started, and it's non-map non-empty line, then invalid */
+        else if (map_started)
+            invalid_after_map = 1;
+        else
+        {
+            /* chekc has NSWE */
+            if (ft_strnstr(line, "NO ", 3))
+            has_north = 1;
+            else if (ft_strnstr(line, "SO ", 3))
+                has_south = 1;
+            else if (ft_strnstr(line, "WE ", 3))
+                has_west = 1;
+            else if (ft_strnstr(line, "EA ", 3))
+                has_east = 1;
+            /* check has FC, validate its RGB color */
+            else if (ft_strnstr(line, "F ", 2))
+                has_floor = is_valid_rgb(line);
+            else if (ft_strnstr(line, "C ", 2))
+                has_celling = is_valid_rgb(line);
+        }
         free(line);
         line = get_next_line(fd);
     }
+    close(fd);
     /* check if all components are incl */
     return (has_north && has_south && has_west && has_east
-        && has_floor && has_celling && has_map);
+        && has_floor && has_celling && has_map && !invalid_after_map);
 }
 
 /* check map is valid */
 
 /* check NSWE has the right texture */
+
+/* check the order
+    - map need to be the last item
+    - no other char after the map
+*/
 
 /* testing */
 // // testing check_file_extension
@@ -171,30 +225,30 @@ int check_map_component(char *file_path)
 //     printf("%d\n", check_file_extension(s2));
 // }
 
-// test is_valid_rgb
-int main()
-{
-    char *line1 = "F 20,20,-20";
-    char *line2 = "C 200,200,200";
-    char *line3 = "G 200,200,200";
-    char *line4 = "C 200,200,";
-    char *line5 = "C ,,,";
-    char *line6 = "      F      17,    38,     64";
-    char *line7 = "C 200,          200,200";
-    
-    printf("%d\n", is_valid_rgb(line1));
-    printf("%d\n", is_valid_rgb(line2));
-    printf("%d\n", is_valid_rgb(line3));
-    printf("%d\n", is_valid_rgb(line4));
-    printf("%d\n", is_valid_rgb(line5));
-    printf("%d\n", is_valid_rgb(line6));
-    printf("%d\n", is_valid_rgb(line7));
-}
-
-// // test check_map_component
-// int main(int ac, char **av)
+// // test is_valid_rgb
+// int main()
 // {
-//     (void)ac;
-
-//     printf("%d\n", check_map_component(av[1]));
+//     char *line1 = "F 20,20,-20";
+//     char *line2 = "C 200,200,200";
+//     char *line3 = "G 200,200,200";
+//     char *line4 = "C 200,200,";
+//     char *line5 = "C ,,,";
+//     char *line6 = "      F      17,    38,     64";
+//     char *line7 = "C 200,          200,200";
+    
+//     printf("%d\n", is_valid_rgb(line1));
+//     printf("%d\n", is_valid_rgb(line2));
+//     printf("%d\n", is_valid_rgb(line3));
+//     printf("%d\n", is_valid_rgb(line4));
+//     printf("%d\n", is_valid_rgb(line5));
+//     printf("%d\n", is_valid_rgb(line6));
+//     printf("%d\n", is_valid_rgb(line7));
 // }
+
+// test check_map_component
+int main(int ac, char **av)
+{
+    (void)ac;
+
+    printf("%d\n", check_map_component(av[1]));
+}
