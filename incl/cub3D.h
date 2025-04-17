@@ -56,6 +56,7 @@ typedef struct s_player
 }   t_player;
 
 /* map validation utlis */
+char    *ft_strstr(const char *big, char *small);
 int is_space(char c);
 int is_valid_rgb(char *line);
 int check_file_extension(char *filename);

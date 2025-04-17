@@ -43,5 +43,5 @@ int is_empty_line(char *line)
     return (1);
 }
 
-
+/* TODO */
 /* check map is valid */

@@ -1,5 +1,27 @@
 #include "../incl/cub3D.h"
 
+/* */
+char    *ft_strstr(const char *big, char *small)
+{
+    int i;
+    int j;
+
+    i = 0;
+    if (!small)
+        return ((char *)big);
+    while (big[i])
+    {
+        j = 0;
+        while (big[i + j] && small[j]
+            && big[i + j] == small[j])
+            j++;
+        if (!small[j])
+            return ((char *)&big[i]);
+        i++;
+    }
+    return (NULL);
+}
+
 /* check if a char is a space
     - return 1 if it's a space
     - return 0 if not
