@@ -10,29 +10,36 @@
 # include "../src/libft/libft.h"
 // # include "../minilibx-linux/mlx.h"
 
-/* component for map validation */
+/* component for input validation */
 typedef struct s_component
 {
+    /* texture and color flags */
     int has_north;
     int has_south;
     int has_west;
     int has_east;
     int has_floor;
     int has_ceiling;
+    /* map validation flag */
     int has_map;
     int map_started;
     int empty_after_map;
     int invalid;
+    /* player pos */
+    int player_x;
+    int player_y;
+    char    player_dir;
+    int     player_count;
 }   t_component;
 
 /* map data */
 typedef struct s_map
 {
-    char    **grip;
+    char    **grid;
     int     width;
-    int     heigth;
-    int     player_x;
-    int     player_y;
+    int     height;
+    int     player_x; // col nbr
+    int     player_y; // row nbr
 }   t_map;
 
 /* texture data */

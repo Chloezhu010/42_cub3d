@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_validation.c                                   :+:      :+:    :+:   */
+/*   input_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chloe <chloe@student.42.fr>                +#+  +:+       +#+        */
+/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:59:11 by czhu              #+#    #+#             */
-/*   Updated: 2025/04/17 21:22:13 by chloe            ###   ########.fr       */
+/*   Updated: 2025/04/18 15:25:49 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/cub3D.h"
-
-#include <string.h>
 
 /* helper function: check texture & handle duplication */
 void    check_NSWE_texture(char *line, t_component *ctx)
@@ -93,7 +91,7 @@ void    process_line(char *line, t_component *ctx)
     - has all the components: NSWE, FC, map
     - return 1 if valid, return 0 if not
 */
-int check_map_component(char *file_path)
+int check_input_component(char *file_path)
 {
     int fd;
     char    *line;
@@ -134,10 +132,9 @@ int check_map_component(char *file_path)
 //     printf("%d\n", ctx.has_south);
 // }
 
-// test check_map_component
-int main(int ac, char **av)
-{
-    (void)ac;
-
-    printf("%d\n", check_map_component(av[1]));
-}
+// // test check_input_component
+// int main(int ac, char **av)
+// {
+//     (void)ac;
+//     printf("%d\n", check_map_component(av[1]));
+// }
