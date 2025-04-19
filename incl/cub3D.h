@@ -7,6 +7,7 @@
 # include <math.h>
 # include <fcntl.h>
 # include <sys/time.h>
+# include <limits.h>
 # include "../src/libft/libft.h"
 // # include "../minilibx-linux/mlx.h"
 
