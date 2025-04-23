@@ -114,6 +114,94 @@ int is_within_bounds(char **grid, int row, int col, int height)
     return (1);
 }
 
+/* flood fill to check if surrounded by wall */
+int flood_fill(t_map *map, bool **visited, int x, int y)
+{
+    // check if the player is within bound
+    if (!is_within_bounds(map->grid, y, x, map->height))
+        return (0);
+    // skip if already visited or wall
+    if (visited[y][x] || map->grid[y][x] == '1')
+        return (1);
+    // check for invalid char
+    if (!ft_strchr("0NSEW ", map->grid[y][x]))
+        return (0);
+    // mark as visited
+    visited[y][x] = true;
+    // recursively check adjacent cells
+    return (flood_fill(map, visited, x + 1, y)
+            && flood_fill(map, visited, x - 1, y)
+            && flood_fill(map, visited, x, y + 1)
+            && flood_fill(map, visited, x, y - 1));
+}
+
+/* free the visited grid */
+void    free_visited_grid(bool **visited, int height)
+{
+    int i;
+
+    if (!visited)
+        return ;
+    i = 0;
+    while (i < height)
+    {
+        free(visited[i]);
+        i++;
+    }
+    free(visited);
+}
+
+/* init visited grid for flood fill */
+bool    **create_visited_grid(int width, int height)
+{
+    bool **visited;
+    int i;
+
+    visited = (bool **)ft_calloc(height, sizeof(bool *));
+    if (!visited)
+        return (NULL);
+    i = 0;
+    while (i < height)
+    {
+        visited[i] = (bool *)ft_calloc(width, sizeof(bool));
+        if (!visited[i])
+        {
+            free_visited_grid(visited, i);
+            return (NULL);
+        }
+        i++;
+    }
+    return (visited);
+}
+
+/* check if map is closed */
+int is_map_closed(t_map *map)
+{
+    bool    **visited;
+    int     result;
+
+    // create visited grid
+    visited = create_visited_grid(map->width, map->height);
+    if (!visited)
+        return (0);
+    // flood fill from the player pos
+    result = flood_fill(map, visited, map->player_x, map->player_y);
+    // cleanup and return
+    free_visited_grid(visited, map->height);
+    return (result);
+}
+
+int validate_map(t_map *map)
+{
+    // check player count & pos
+    if (!process_player(map))
+        return (0);
+    // check map enclosure
+    if (!is_map_closed(map))
+        return (0);
+    return (1);
+}
+
 // // test boundary check
 // int main()
 // {
@@ -134,21 +222,35 @@ int is_within_bounds(char **grid, int row, int col, int height)
 //     printf("expected 1: %d\n", is_within_bounds(grid, 4, 6, 5));
 // }
 
-// // test process_player, is_wall_surround
+// // test 
 // int main()
 // {
 //     t_map map;
+//     // char *grid[] = {
+//     //     "    111", // Row 0 - spaces at start
+//     //     "    101", // Row 1
+//     //     "11011S1", // Row 2 - different length
+//     //     "101 101", // Row 3 - spaces in middle
+//     //     "111 111", // Row 4
+//     //     NULL  
+//     // };
 //     char *grid[] = {
-//         "    111", // Row 0 - spaces at start
-//         "    101", // Row 1
-//         "1101101", // Row 2 - different length
-//         "101 101", // Row 3 - spaces in middle
-//         "111 111", // Row 4
-//         NULL  
+//         "111",
+//         "111",
+//         "1S1",
+//         "101",
+//         "101",
+//         "101",
+//         "101",
+//         NULL
 //     };
 //     map.grid = grid;
 //     map.height = 5;
+//     map.width = 3;
+//     // map.player_x = 1;
+//     // map.player_y = 2;
 //     // printf("%d\n", process_player(&map));
 //     // printf("col: %d, row: %d\n", map.player_x, map.player_y);
-//     printf("expected 1: %d\n", is_wall_surround(&map));
+//     // printf("%d\n", is_map_closed(&map));
+//     printf("%d\n", validate_map(&map));
 // }

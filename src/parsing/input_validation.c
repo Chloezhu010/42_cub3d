@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chloe <chloe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:59:11 by czhu              #+#    #+#             */
-/*   Updated: 2025/04/18 15:25:49 by czhu             ###   ########.fr       */
+/*   Updated: 2025/04/23 18:38:41 by chloe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,41 @@ void    check_FC_texture(char *line, t_component *ctx)
     }
 }
 
+/* add a line to the map grid and update width, height */
+int add_line_to_map(t_map *map, char *line)
+{
+    char    **new_grid;
+    int i;
+
+    /* allocate new grid with + 1 slot */
+    new_grid = (char **)ft_calloc(map->height + 2, sizeof(char *));
+    if (!new_grid)
+        return (0);
+    /* copy existing grid */
+    i = 0;
+    while (i < map->height)
+    {
+        new_grid[i] = map->grid[i];
+        i++;
+    }
+    /* add new line */
+    new_grid[i] = ft_strdup(line);
+    if (!new_grid[i])
+    {
+        free(new_grid);
+        return (0);
+    }
+    /* update dimention */
+    map->height++;
+    if ((int)ft_strlen(line) > map->width)
+        map->width = (int)ft_strlen(line);
+    /* replace old grid */
+    if (map->grid)
+        free(map->grid);
+    map->grid = new_grid;
+    return (1);
+}
+
 /* helper function: process a line of the input */
 void    process_line(char *line, t_component *ctx)
 {
@@ -75,6 +110,9 @@ void    process_line(char *line, t_component *ctx)
         if (ctx->map_started && ctx->empty_after_map)
             ctx->invalid = 1;
         ctx->map_started = 1;
+        /* add the line to the current map grid */
+        if (!ctx->invalid && !add_line_to_map(&ctx->map, line))
+            ctx->invalid = 1;
     }
     /* if map has started, and it's non-map non-empty line, then invalid */
     else if (ctx->map_started)
@@ -83,6 +121,26 @@ void    process_line(char *line, t_component *ctx)
     {
         check_NSWE_texture(line, ctx);
         check_FC_texture(line, ctx);
+    }
+}
+
+/* for DEBUG */
+void    print_map(t_map *map)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (i < map->height)
+    {
+        j = 0;
+        while (j < map->width)
+        {
+            printf("%c", map->grid[i][j]);
+            j++;
+        }
+        printf("\n");
+        i++;
     }
 }
 
@@ -99,6 +157,9 @@ int check_input_component(char *file_path)
     
     /* init ctx */
     ft_memset(&ctx, 0, sizeof(t_component));
+    ctx.map.grid = NULL;
+    ctx.map.width = 0;
+    ctx.map.height = 0;
     /* check file extension */
     if (!check_file_extension(file_path))
         return (0);
@@ -114,10 +175,14 @@ int check_input_component(char *file_path)
         line = get_next_line(fd);
     }
     close(fd);
+    // print_map(&ctx.map); //DEBUG
+    if (!validate_map(&ctx.map))
+        return (0);
     /* check if all components are incl */
     return (ctx.has_north && ctx.has_south && ctx.has_west && ctx.has_east
         && ctx.has_ceiling && ctx.has_floor && ctx.has_map && !ctx.invalid);
 }
+
 
 // // test check_NSWE_texture
 // int main(int ac, char **av)
@@ -132,9 +197,10 @@ int check_input_component(char *file_path)
 //     printf("%d\n", ctx.has_south);
 // }
 
-// // test check_input_component
-// int main(int ac, char **av)
-// {
-//     (void)ac;
-//     printf("%d\n", check_map_component(av[1]));
-// }
+
+// test check_input_component
+int main(int ac, char **av)
+{
+    (void)ac;
+    printf("%d\n", check_input_component(av[1]));
+}

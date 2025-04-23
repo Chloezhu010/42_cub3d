@@ -9,7 +9,18 @@
 # include <sys/time.h>
 # include <limits.h>
 # include "../src/libft/libft.h"
+# include <stdbool.h>
 // # include "../minilibx-linux/mlx.h"
+
+/* map data */
+typedef struct s_map
+{
+    char    **grid;
+    int     width;
+    int     height;
+    int     player_x; // col nbr
+    int     player_y; // row nbr
+}   t_map;
 
 /* component for input validation */
 typedef struct s_component
@@ -31,17 +42,9 @@ typedef struct s_component
     int player_y;
     char    player_dir;
     int     player_count;
+    /* map */
+    t_map   map;
 }   t_component;
-
-/* map data */
-typedef struct s_map
-{
-    char    **grid;
-    int     width;
-    int     height;
-    int     player_x; // col nbr
-    int     player_y; // row nbr
-}   t_map;
 
 /* texture data */
 typedef struct s_texture
@@ -73,6 +76,8 @@ int check_texture_extension(char *texture);
 /* map check */
 int is_map_line(char *line);
 int is_empty_line(char *line);
+int is_player(char c);
+int validate_map(t_map *map);
 
 /* raycasting */
 

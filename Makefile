@@ -17,8 +17,7 @@ CFLAGS = -Wall -Wextra -Werror
 # main src files
 SRC = $(PARSER_DIR)/input_validation.c \
 		$(PARSER_DIR)/input_validation_utils.c \
-		$(PARSER_DIR)/map_check.c \
-		$(PARSER_DIR)/map_validation.c
+		$(PARSER_DIR)/map_check.c 
 OBJ = $(SRC:.c=.o)
 
 # include dir
