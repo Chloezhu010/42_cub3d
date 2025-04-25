@@ -10,7 +10,7 @@
 # include <limits.h>
 # include "../src/libft/libft.h"
 # include <stdbool.h>
-// # include "../minilibx-linux/mlx.h"
+# include "../minilibx-linux/mlx.h"
 
 /* map data */
 typedef struct s_map
@@ -65,6 +65,14 @@ typedef struct s_player
     double  dir_x;
     double  dir_y;
 }   t_player;
+
+/* game */
+typedef struct s_game
+{
+    void    *mlx;
+    void    *win;
+    void    *img;
+}   t_game;
 
 /* map validation utlis */
 char    *ft_strstr(const char *big, char *small);

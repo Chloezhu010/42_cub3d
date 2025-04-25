@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chloe <chloe@student.42.fr>                +#+  +:+       +#+        */
+/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:59:11 by czhu              #+#    #+#             */
-/*   Updated: 2025/04/23 18:38:41 by chloe            ###   ########.fr       */
+/*   Updated: 2025/04/25 15:18:04 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,15 @@ void    print_map(t_map *map)
 
 /* check map if it
     - can open properly
-    - has all the components: NSWE, FC, map
+    - has all the components & texture
+        - NSWE, FC, map
+    - map is the last one
+    - has valid map
+        - only 1 player
+        - surrounded by wall
     - return 1 if valid, return 0 if not
 */
-int check_input_component(char *file_path)
+int check_input(char *file_path)
 {
     int fd;
     char    *line;
@@ -197,10 +202,9 @@ int check_input_component(char *file_path)
 //     printf("%d\n", ctx.has_south);
 // }
 
-
-// test check_input_component
-int main(int ac, char **av)
-{
-    (void)ac;
-    printf("%d\n", check_input_component(av[1]));
-}
+// // test check_input
+// int main(int ac, char **av)
+// {
+//     (void)ac;
+//     printf("%d\n", check_input(av[1]));
+// }

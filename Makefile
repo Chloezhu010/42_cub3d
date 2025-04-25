@@ -6,34 +6,36 @@ SRC_DIR = ./src
 PARSER_DIR = $(SRC_DIR)/parsing
 LIBFT_DIR = $(SRC_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a
-# MLX_DIR = ./minilibx-linux
-# MLX = $(MLX_DIR)/libmlx.a
+MLX_DIR = ./minilibx-linux
+MLX = $(MLX_DIR)/libmlx.a
 
 # compiler & flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-# MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lz
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lz
 
 # main src files
 SRC = $(PARSER_DIR)/input_validation.c \
 		$(PARSER_DIR)/input_validation_utils.c \
-		$(PARSER_DIR)/map_check.c 
+		$(PARSER_DIR)/map_check.c \
+		$(SRC_DIR)/main_test.c
+
 OBJ = $(SRC:.c=.o)
 
 # include dir
-INC = -I./incl -I$(SRC_DIR)/libft #-I$(MLX_DIR)
+INC = -I./incl -I$(SRC_DIR)/libft -I$(MLX_DIR)
 
 
-# fules
-all: $(LIBFT) $(NAME)
+# files
+all: $(LIBFT) $(MLX) $(NAME)
 
 # build libft first
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
-# # make mlx
-# $(MLX):
-# 	make -C $(MLX_DIR)
+# make mlx
+$(MLX):
+	make -C $(MLX_DIR)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -L$(LIBFT_DIR) -lft $(MLX_FLAGS)
