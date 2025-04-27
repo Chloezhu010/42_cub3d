@@ -1,5 +1,23 @@
 #include "../incl/cub3D.h"
 
+/* initialize map */
+char    **get_map(void)
+{
+    char **map = malloc(sizeof(char *) * 11);
+    map[0] = "111111111111111";
+    map[1] = "100000000000001";
+    map[2] = "100000000000001";
+    map[3] = "100000100000001";
+    map[4] = "100000000000001";
+    map[5] = "100000010000001";
+    map[6] = "100001000000001";
+    map[7] = "100000000000001";
+    map[8] = "100000000000001";
+    map[9] = "111111111111111";
+    map[10] = NULL;
+    return (map);
+}
+
 /* put pixel into the buffer, then display */
 void    put_pixel(int x, int y, int color, t_game *game)
 {
@@ -28,8 +46,23 @@ void    draw_square(int x, int y, int size, int color, t_game *game)
         put_pixel(x + i, y + size, color, game);
 }
 
+/* draw the 2D map */
+void    draw_map(t_game *game)
+{
+    char **map = game->map;
+    int color = 0x0000FF;
+
+    for (int y = 0; map[y]; y++)
+        for (int x = 0; map[y][x]; x++)
+            if (map[y][x] == '1')
+                draw_square(x * BLOCK, y * BLOCK, BLOCK, color, game);
+}
+
 void    init_game(t_game *game)
 {
+    init_player(&game->player); // init player
+    game->map = get_map(); // init map
+    /* init mlx, win, data */
     game->mlx = mlx_init();
     if (!game->mlx)
         exit(1);
@@ -57,9 +90,9 @@ void    init_game(t_game *game)
         free(game->mlx);
         exit(1);
     }
-    init_player(&game->player);
 }
 
+/* helper function for draw_loop */
 void    clear_image(t_game *game)
 {
     for (int y = 0; y < HEIGHT; y++)
@@ -77,7 +110,8 @@ int draw_loop(t_game *game)
     /* clear the screen */
     clear_image(game);
     /* draw the square */
-    draw_square(player->pos_y, player->pos_x, 5, 0x00FF00, game);
+    draw_square(player->pos_y, player->pos_x, 10, 0x00FF00, game);
+    draw_map(game);
     /* put the img to the win */
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
     return (0);
@@ -119,8 +153,7 @@ int main(void)
     /* key hooks for movement */
     mlx_hook(game.win, 2, 1L<<0, key_press, &game);
     mlx_hook(game.win, 3, 1L<<1, key_release, &game);
-    /* key hooks */
-    /* click hook for cross */
+    /* click hook for cross-close */
     mlx_hook(game.win, 17, 0, cross_close, &game);
     /* loop */
     mlx_loop_hook(game.mlx, draw_loop, &game);

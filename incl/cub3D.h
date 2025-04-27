@@ -15,6 +15,8 @@
 /* screen size */
 # define WIDTH 1280
 # define HEIGHT 720
+/* map size */
+# define BLOCK 64
 
 /* key hooks */
 # define W 119
@@ -77,17 +79,15 @@ typedef struct s_player
 {
     float  pos_x;
     float  pos_y;
-    float angle;
-
+    /* for direction movement */
     bool key_up;
     bool key_down;
     bool key_left;
     bool key_right;
+    /* for rotation */
+    float angle;
     bool left_rotate;
     bool right_rotate;
-
-    // double  dir_x;
-    // double  dir_y;
 }   t_player;
 
 /* game */
@@ -102,6 +102,7 @@ typedef struct s_game
     int size_line; // bytes per row (img width)
     int endian;
     t_player player;
+    char    **map;
 }   t_game;
 
 

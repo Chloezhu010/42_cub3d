@@ -60,8 +60,8 @@ int key_release(int keycode, t_game *game)
 
 void    move_player(t_player *player)
 {
+    /* 4-direction movement */
     int speed = 3;
-
     if (player->key_up)
         player->pos_x -= speed;
     if (player->key_down)
@@ -70,4 +70,9 @@ void    move_player(t_player *player)
         player->pos_y -= speed;
     if (player->key_right)
         player->pos_y += speed;
+    /* rotation movement */
+    float angle_speed = 0.03;
+    float cos_angle = cos(player->angle);
+    float sin_angle = sin(player->angle);
+
 }
