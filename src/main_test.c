@@ -64,32 +64,10 @@ void    init_game(t_game *game)
     game->map = get_map(); // init map
     /* init mlx, win, data */
     game->mlx = mlx_init();
-    if (!game->mlx)
-        exit(1);
     game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Cub3D");
-    if (!game->win)
-    {
-        mlx_destroy_display(game->mlx);
-        free(game->mlx);
-        exit(1);
-    }
     game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
-    if (!game->img)
-    {
-        mlx_destroy_window(game->mlx, game->win);
-        mlx_destroy_display(game->mlx);
-        free(game->mlx);
-        exit(1);
-    }
     game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line, &game->endian);
-    if (!game->data)
-    {
-        mlx_destroy_image(game->mlx, game->img);
-        mlx_destroy_window(game->mlx, game->win);
-        mlx_destroy_display(game->mlx);
-        free(game->mlx);
-        exit(1);
-    }
+    mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
 /* helper function for draw_loop */
@@ -110,7 +88,7 @@ int draw_loop(t_game *game)
     /* clear the screen */
     clear_image(game);
     /* draw the square */
-    draw_square(player->pos_y, player->pos_x, 10, 0x00FF00, game);
+    draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, game);
     draw_map(game);
     /* put the img to the win */
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
