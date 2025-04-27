@@ -12,6 +12,21 @@
 # include <stdbool.h>
 # include "../minilibx-linux/mlx.h"
 
+/* screen size */
+# define WIDTH 1280
+# define HEIGHT 720
+
+/* key hooks */
+# define W 119
+# define A 97
+# define S 115
+# define D 100
+# define LEFT 65361
+# define RIGHT 65363
+# define ESC 65307
+
+# define PI 3.141592653589793
+
 /* map data */
 typedef struct s_map
 {
@@ -60,10 +75,19 @@ typedef struct s_texture
 /* player data */
 typedef struct s_player
 {
-    double  pos_x;
-    double  pos_y;
-    double  dir_x;
-    double  dir_y;
+    float  pos_x;
+    float  pos_y;
+    float angle;
+
+    bool key_up;
+    bool key_down;
+    bool key_left;
+    bool key_right;
+    bool left_rotate;
+    bool right_rotate;
+
+    // double  dir_x;
+    // double  dir_y;
 }   t_player;
 
 /* game */
@@ -72,7 +96,14 @@ typedef struct s_game
     void    *mlx;
     void    *win;
     void    *img;
+
+    char *data; // ptr to raw pixel buffer
+    int bpp; // bits per pixel (typically 32 for RGBA)
+    int size_line; // bytes per row (img width)
+    int endian;
+    t_player player;
 }   t_game;
+
 
 /* map validation utlis */
 char    *ft_strstr(const char *big, char *small);
@@ -91,10 +122,18 @@ int validate_map(t_map *map);
 
 /* rendering */
 
-/* player control */
-
 /* texture management */
 
 /* utils */
+
+/* player test */
+void    init_player(t_player *player);
+int key_press(int keycode, t_game *game);
+int key_release(int keycode, t_game *game);
+void    move_player(t_player * player);
+
+/* main test */
+void    cleanup(t_game *game);
+
 
 #endif
