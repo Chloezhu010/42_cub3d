@@ -120,9 +120,34 @@ void    init_game(t_game *game)
     game->map = get_map(); // init map
     /* init mlx, win, data */
     game->mlx = mlx_init();
+    if (!game->mlx)
+    {
+        ft_printf("mlx_init failed\n");
+        cleanup(game);
+        exit(1);
+    }
     game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Cub3D");
+    if (!game->win)
+    {
+        ft_printf("mlx_new_window failed\n");
+        cleanup(game);
+        exit(1);
+    }
     game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+    if (!game->img)
+    {
+        ft_printf("mlx_new_image failed\n");
+        cleanup(game);
+        exit(1);
+    }
     game->data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line, &game->endian);
+    if (!game->data)
+    {
+        ft_printf("mlx_get_data_addr failed\n");
+        cleanup(game);
+        exit(1);
+    }
+
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
