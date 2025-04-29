@@ -4,7 +4,7 @@ void    init_player(t_player *player)
 {
     player->pos_x = WIDTH / 2;
     player->pos_y = HEIGHT / 2;
-    player->angle = PI / 2; // initial angle
+    player->angle = PI / 2; // initial angle, facing upwards
 
     player->key_up = false;
     player->key_down = false;
@@ -90,19 +90,19 @@ void    move_player(t_player *player)
     if (player->key_up)
     {
         player->pos_x += cos_angle * speed;
-        player->pos_y -= sin_angle * speed;
+        player->pos_y += sin_angle * speed;
     }
     if (player->key_down)
     {
         player->pos_x -= cos_angle * speed;
-        player->pos_y += sin_angle * speed;
+        player->pos_y -= sin_angle * speed;
     }
-    if (player->key_right)
+    if (player->key_left)
     {
         player->pos_x += sin_angle * speed;
         player->pos_y -= cos_angle * speed;
     }
-    if (player->key_left)
+    if (player->key_right)
     {
         player->pos_x -= sin_angle * speed;
         player->pos_y += cos_angle * speed;
