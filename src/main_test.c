@@ -78,9 +78,18 @@ void    clear_image(t_game *game)
             put_pixel(x, y, 0, game);
 }
 
+/* detect whether the ray touches the wall */
+// bool touch(float px, float py, t_game *game)
+// {
+
+// }
+
 int draw_loop(t_game *game)
 {
     t_player *player;
+    // float ray_x;
+    // float ray_y;
+
 
     player = &game->player;
     /* player movement control logic */
@@ -90,6 +99,10 @@ int draw_loop(t_game *game)
     /* draw the square */
     draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, game);
     draw_map(game);
+
+
+
+
     /* put the img to the win */
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
     return (0);
