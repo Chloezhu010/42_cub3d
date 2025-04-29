@@ -117,7 +117,7 @@ int draw_loop(t_game *game)
     {
         put_pixel(ray_x, ray_y, 0xFF0000, game);
         ray_x += cos_angle;
-        ray_y += sin_angle;
+        ray_y -= sin_angle;
     }
 
     /* put the img to the win */

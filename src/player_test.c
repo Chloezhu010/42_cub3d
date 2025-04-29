@@ -77,9 +77,9 @@ void    move_player(t_player *player)
     float sin_angle = sin(player->angle);
 
     if (player->left_rotate)
-        player->angle -= angle_speed;
-    if (player->right_rotate)
         player->angle += angle_speed;
+    if (player->right_rotate)
+        player->angle -= angle_speed;
     /* if angle overflow, reset to 0 */
     if (player->angle > 2 * PI)
         player->angle = 0;
@@ -90,21 +90,21 @@ void    move_player(t_player *player)
     if (player->key_up)
     {
         player->pos_x += cos_angle * speed;
-        player->pos_y += sin_angle * speed;
+        player->pos_y -= sin_angle * speed;
     }
     if (player->key_down)
     {
         player->pos_x -= cos_angle * speed;
-        player->pos_y -= sin_angle * speed;
+        player->pos_y += sin_angle * speed;
     }
     if (player->key_left)
     {
-        player->pos_x += sin_angle * speed;
+        player->pos_x -= sin_angle * speed;
         player->pos_y -= cos_angle * speed;
     }
     if (player->key_right)
     {
-        player->pos_x -= sin_angle * speed;
+        player->pos_x += sin_angle * speed;
         player->pos_y += cos_angle * speed;
     }
 }
