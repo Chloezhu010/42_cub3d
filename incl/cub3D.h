@@ -131,7 +131,8 @@ int validate_map(t_map *map);
 void    init_player(t_player *player);
 int key_press(int keycode, t_game *game);
 int key_release(int keycode, t_game *game);
-void    move_player(t_player * player);
+void    move_player(t_player *player, t_game *game);
+bool touch(float px, float py, t_game *game);
 
 /* main test */
 void    cleanup(t_game *game);

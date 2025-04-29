@@ -18,6 +18,19 @@ char    **get_map(void)
     return (map);
 }
 
+float distance(float x, float y){
+    return sqrt(x * x + y * y);
+}
+
+float fixed_dist(float x1, float y1, float x2, float y2, t_game *game)
+{
+    float delta_x = x2 - x1;
+    float delta_y = y2 - y1;
+    float angle = atan2(delta_y, delta_x) - game->player.angle;
+    float fix_dist = distance(delta_x, delta_y) * cos(angle);
+    return fix_dist;
+}
+
 /* put pixel into the buffer, then display */
 void    put_pixel(int x, int y, int color, t_game *game)
 {
@@ -106,7 +119,7 @@ int draw_loop(t_game *game)
     cos_angle = cos(player->angle);
     sin_angle = sin(player->angle);
     /* player movement control logic */
-    move_player(player);
+    move_player(player, game);
     /* clear the screen */
     clear_image(game);
     /* draw the square */
