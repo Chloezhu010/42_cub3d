@@ -18,6 +18,49 @@ char    **get_map(void)
     return (map);
 }
 
+t_wall_side get_wall_side(float ray_x, float ray_y, float dx, float dy)
+{
+    int map_x = ray_x / BLOCK;
+    int map_y = ray_y / BLOCK;
+    
+    // Calculate which face was hit using ray direction
+    float prev_x = ray_x - dx;
+    float prev_y = ray_y - dy;
+    int prev_map_x = prev_x / BLOCK;
+    int prev_map_y = prev_y / BLOCK;
+    
+    // Horizontal movement detected (crossed vertical grid line)
+    if (prev_map_x < map_x)
+        return WALL_WEST;
+    else if (prev_map_x > map_x)
+        return WALL_EAST;
+    
+    // Vertical movement detected (crossed horizontal grid line)
+    if (prev_map_y < map_y)
+        return WALL_NORTH;
+    else if (prev_map_y > map_y)
+        return WALL_SOUTH;
+    
+    // Default case
+    return WALL_NORTH;
+}
+
+int get_wall_color(t_wall_side side)
+{
+    switch(side) {
+        case WALL_NORTH:
+            return 0xFF0000; // Red
+        case WALL_SOUTH:
+            return 0x00FF00; // Green
+        case WALL_EAST:
+            return 0x0000FF; // Blue
+        case WALL_WEST:
+            return 0xFFFF00; // Yellow
+        default:
+            return 0xFFFFFF; // White
+    }
+}
+
 float distance(float x, float y){
     return sqrt(x * x + y * y);
 }
@@ -105,6 +148,61 @@ bool touch(float px, float py, t_game *game)
     return (false);
 }
 
+void draw_line(t_player *player, t_game *game, float start_x, int i)
+{
+    float cos_angle = cos(start_x);
+    float sin_angle = sin(start_x);
+    float ray_x = player->pos_x;
+    float ray_y = player->pos_y;
+    float prev_x, prev_y;
+    float step_x = cos_angle;
+    float step_y = sin_angle;
+
+    while(!touch(ray_x, ray_y, game))
+    {
+        if(DEBUG)
+            put_pixel(ray_x, ray_y, 0xFF0000, game);
+        prev_x = ray_x;
+        prev_y = ray_y;
+        ray_x += step_x;
+        ray_y += step_y;
+    }
+    
+    if(!DEBUG)
+    {
+        // Determine wall face using last step
+        t_wall_side wall_side = get_wall_side(ray_x, ray_y, step_x, step_y);
+        
+        // Get appropriate color
+        int wall_color = get_wall_color(wall_side);
+        
+        float dist = fixed_dist(player->pos_x, player->pos_y, ray_x, ray_y, game);
+        float height = (BLOCK / dist) * (WIDTH / 2);
+        int start_y = (HEIGHT - height) / 2;
+        int end = start_y + height;
+        
+        // Apply shading based on distance
+        float shade = 1.0f - (dist / (WIDTH / 2));
+        if (shade < 0.2f) shade = 0.2f;
+        if (shade > 1.0f) shade = 1.0f;
+        
+        int r = ((wall_color >> 16) & 0xFF) * shade;
+        int g = ((wall_color >> 8) & 0xFF) * shade;
+        int b = (wall_color & 0xFF) * shade;
+        int shaded_color = (r << 16) | (g << 8) | b;
+        
+        // Ensure bounds
+        if (start_y < 0) start_y = 0;
+        if (end > HEIGHT) end = HEIGHT;
+        
+        while(start_y < end)
+        {
+            put_pixel(i, start_y, shaded_color, game);
+            start_y++;
+        }
+    }
+}
+
 int draw_loop(t_game *game)
 {
     t_player *player;
@@ -123,14 +221,17 @@ int draw_loop(t_game *game)
     /* clear the screen */
     clear_image(game);
     /* draw the square */
-    draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, game);
-    draw_map(game);
+    // draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, game);
+    // draw_map(game);
     /* draw the ray & stop if it touches the wall */
-    while (!touch(ray_x, ray_y, game))
+	float fraction = PI / 3 / WIDTH;
+    float start_x = player->angle - PI / 6;
+    int i = 0;
+    while(i < WIDTH)
     {
-        put_pixel(ray_x, ray_y, 0xFF0000, game);
-        ray_x += cos_angle;
-        ray_y -= sin_angle;
+        draw_line(player, game, start_x, i);
+        start_x += fraction;
+        i++;
     }
 
     /* put the img to the win */

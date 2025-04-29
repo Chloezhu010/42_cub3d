@@ -87,24 +87,24 @@ void    move_player(t_player *player, t_game *game)
     if (player->angle < 0)
         player->angle = 2 * PI;
     /* movement based on the angle */
-    if (player->key_up && !touch(player->pos_x + (cos_angle * speed), player->pos_y - (sin_angle * speed), game))
+    if (player->key_up && !touch(player->pos_x + (cos_angle * speed), player->pos_y + (sin_angle * speed), game))
     {
         player->pos_x += cos_angle * speed;
-        player->pos_y -= sin_angle * speed;
-    }
-    if (player->key_down && !touch(player->pos_x - (cos_angle * speed), player->pos_y + (sin_angle * speed), game))
-    {
-        player->pos_x -= cos_angle * speed;
         player->pos_y += sin_angle * speed;
     }
-	if (player->key_left && !touch(player->pos_x - (sin_angle * speed), player->pos_y - (cos_angle * speed), game))
-	{
-		player->pos_x -= sin_angle * speed;
-		player->pos_y -= cos_angle * speed;
-	}
-	if (player->key_right && !touch(player->pos_x + (sin_angle * speed), player->pos_y + (cos_angle * speed), game))
+    if (player->key_down && !touch(player->pos_x - (cos_angle * speed), player->pos_y - (sin_angle * speed), game))
+    {
+        player->pos_x -= cos_angle * speed;
+        player->pos_y -= sin_angle * speed;
+    }
+	if (player->key_left && !touch(player->pos_x + (sin_angle * speed), player->pos_y - (cos_angle * speed), game))
 	{
 		player->pos_x += sin_angle * speed;
+		player->pos_y -= cos_angle * speed;
+	}
+	if (player->key_right && !touch(player->pos_x - (sin_angle * speed), player->pos_y + (cos_angle * speed), game))
+	{
+		player->pos_x -= sin_angle * speed;
 		player->pos_y += cos_angle * speed;
 	}
 }

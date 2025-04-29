@@ -29,6 +29,8 @@
 
 # define PI 3.141592653589793
 
+# define DEBUG 0
+
 /* map data */
 typedef struct s_map
 {
@@ -38,6 +40,13 @@ typedef struct s_map
     int     player_x; // col nbr
     int     player_y; // row nbr
 }   t_map;
+
+typedef enum {
+    WALL_NORTH,
+    WALL_SOUTH,
+    WALL_EAST,
+    WALL_WEST
+} t_wall_side;
 
 /* component for input validation */
 typedef struct s_component
