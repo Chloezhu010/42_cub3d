@@ -238,12 +238,12 @@ int draw_loop(t_game *game)
     // draw_map(game);
     /* draw the ray & stop if it touches the wall */
 	float fraction = PI / 3 / WIDTH;
-    float start_x = player->angle - PI / 6;
+    float start_x = player->angle + PI / 6;
     int i = 0;
     while(i < WIDTH)
     {
         draw_line(player, game, start_x, i);
-        start_x += fraction;
+        start_x -= fraction;
         i++;
     }
 
