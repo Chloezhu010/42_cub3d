@@ -136,6 +136,9 @@ int validate_map(t_map *map);
 
 /* utils */
 
+/* cleanup */
+void    cleanup(t_game *game);
+
 /* player test */
 void    init_player(t_player *player);
 int key_press(int keycode, t_game *game);

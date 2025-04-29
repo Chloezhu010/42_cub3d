@@ -19,7 +19,8 @@ SRC = $(PARSER_DIR)/input_validation.c \
 		$(PARSER_DIR)/input_validation_utils.c \
 		$(PARSER_DIR)/map_check.c \
 		$(SRC_DIR)/main_test.c \
-		$(SRC_DIR)/player_test.c
+		$(SRC_DIR)/player_test.c \
+		$(SRC_DIR)/cleanup.c
 
 OBJ = $(SRC:.c=.o)
 

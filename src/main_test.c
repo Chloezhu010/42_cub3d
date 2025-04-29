@@ -4,16 +4,16 @@
 char    **get_map(void)
 {
     char **map = malloc(sizeof(char *) * 11);
-    map[0] = "111111111111111";
-    map[1] = "100000000000001";
-    map[2] = "100000000000001";
-    map[3] = "100000100000001";
-    map[4] = "100000000000001";
-    map[5] = "100000010000001";
-    map[6] = "100001000000001";
-    map[7] = "100000000000001";
-    map[8] = "100000000000001";
-    map[9] = "111111111111111";
+    map[0] = ft_strdup("111111111111111");
+    map[1] = ft_strdup("100000000000001");
+    map[2] = ft_strdup("100000000000001");
+    map[3] = ft_strdup("100000100000001");
+    map[4] = ft_strdup("100000000000001");
+    map[5] = ft_strdup("100000010000001");
+    map[6] = ft_strdup("100001000000001");
+    map[7] = ft_strdup("100000000000001");
+    map[8] = ft_strdup("100000000000001");
+    map[9] = ft_strdup("111111111111111");
     map[10] = NULL;
     return (map);
 }
@@ -250,26 +250,6 @@ int draw_loop(t_game *game)
     /* put the img to the win */
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
     return (0);
-}
-
-/* handle program exit */
-void    cleanup(t_game *game)
-{
-    if (!game)
-        return ;
-    //free_map(game);
-    if (game->mlx)
-	{
-		// cleanup_texture(game);
-		if (game->win)
-		{
-			mlx_destroy_window(game->mlx, game->win);
-			game->win = NULL;
-		}
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
-		game->mlx = NULL;
-	}
 }
 
 /* click cross to close the win */
