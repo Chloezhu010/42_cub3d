@@ -195,10 +195,23 @@ void draw_line(t_player *player, t_game *game, float start_x, int i)
         if (start_y < 0) start_y = 0;
         if (end > HEIGHT) end = HEIGHT;
         
-        while(start_y < end)
-        {
-            put_pixel(i, start_y, shaded_color, game);
-            start_y++;
+        // Define ceiling and floor colors
+        int ceiling_color = 0x87CEEB; // Sky blue for ceiling
+        int floor_color = 0x8B4513;   // Saddle brown for floor
+        
+        // Draw ceiling (from top to wall start)
+        for (int y = 0; y < start_y; y++) {
+            put_pixel(i, y, ceiling_color, game);
+        }
+        
+        // Draw wall (as before)
+        for (int y = start_y; y < end; y++) {
+            put_pixel(i, y, shaded_color, game);
+        }
+        
+        // Draw floor (from wall end to bottom)
+        for (int y = end; y < HEIGHT; y++) {
+            put_pixel(i, y, floor_color, game);
         }
     }
 }
