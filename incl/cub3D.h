@@ -116,7 +116,7 @@ typedef struct s_game
 
 /* input validation*/
 int check_input(char *file_path);
-void    print_map(t_map *map); //for debug
+int add_line_to_map(t_map *map, char *line);
 
 /* input validation utlis */
 char    *ft_strstr(const char *big, char *small);
@@ -158,6 +158,6 @@ void    cleanup(t_game *game);
 
 /* debug utils */
 void    print_texture(t_texture *texture);
-
+void    print_map(t_map *map);
 
 #endif

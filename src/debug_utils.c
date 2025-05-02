@@ -9,3 +9,22 @@ void    print_texture(t_texture *texture)
     printf("floor color: %X\n", texture->floor_color);
     printf("ceiling color: %X\n", texture->ceiling_color);
 }
+
+void    print_map(t_map *map)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (i < map->height)
+    {
+        j = 0;
+        while (j < map->width)
+        {
+            printf("%c", map->grid[i][j]);
+            j++;
+        }
+        printf("\n");
+        i++;
+    }
+}

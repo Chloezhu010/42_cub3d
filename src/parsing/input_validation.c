@@ -6,7 +6,7 @@
 /*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:59:11 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/02 13:06:02 by czhu             ###   ########.fr       */
+/*   Updated: 2025/05/02 16:44:13 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,26 +121,6 @@ void    process_line(char *line, t_component *ctx)
     {
         check_NSWE_texture(line, ctx);
         check_FC_texture(line, ctx);
-    }
-}
-
-/* for DEBUG */
-void    print_map(t_map *map)
-{
-    int i;
-    int j;
-
-    i = 0;
-    while (i < map->height)
-    {
-        j = 0;
-        while (j < map->width)
-        {
-            printf("%c", map->grid[i][j]);
-            j++;
-        }
-        printf("\n");
-        i++;
     }
 }
 

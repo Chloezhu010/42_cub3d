@@ -123,8 +123,28 @@ int parse_element_line(char *line, t_texture *texture)
     return (0);
 }
 
-/* fill the map structure */
+/* add one line to the map */
 
+
+/* fill the map structure */
+void    build_map(char *file_path, t_map *map)
+{
+    int fd;
+    char *line;
+
+    fd = open(file_path, O_RDONLY);
+    if (fd < 0)
+        return ;
+    line = get_next_line(fd);
+    while (line)
+    {
+        if (is_map_line(line))
+            add_line_to_map(map, line);
+        free(line);
+        line = get_next_line(fd);
+    }
+    close(fd);
+}
 
 /* extract the player direction */
 
@@ -133,7 +153,7 @@ int parse_element_line(char *line, t_texture *texture)
 
 
 /* main parsing function */
-int parse_input(char *file_path, t_texture *texture)
+int parse_input(char *file_path, t_map *map, t_texture *texture)
 {
     int fd;
     char *line;
@@ -155,7 +175,7 @@ int parse_input(char *file_path, t_texture *texture)
     }
     close(fd);
     /* build the map */
-
+    build_map(file_path, map);
     /* init player */
 
     return (1);
@@ -164,7 +184,27 @@ int parse_input(char *file_path, t_texture *texture)
 /* cleanup */
 
 
-
+// test build_map
+int main(int ac, char **av)
+{
+    t_texture *texture;
+    t_map *map;
+    
+    if (ac != 2)
+    {
+        printf("Error\nUsage ./cub3D <map .cub>\n");
+        return (1);
+    }
+    texture = malloc(sizeof(t_texture));
+    map = malloc(sizeof(t_map));
+    if (!texture || !map)
+        return (0);
+    ft_memset(texture, 0, sizeof(t_texture));
+    ft_memset(map, 0, sizeof(t_map));
+    if (!parse_input(av[1], map, texture))
+        return (0);
+    print_map(map);
+}
 
 // // testing extract_texture_path
 // int main()
@@ -186,22 +226,22 @@ int parse_input(char *file_path, t_texture *texture)
 //     printf("line2: %X\n", parse_rgb(line2));
 // }
 
-// test parse_element_line
-int main(int ac, char **av)
-{
-    t_texture *texture;
+// // test parse_element_line
+// int main(int ac, char **av)
+// {
+//     t_texture *texture;
     
-    if (ac != 2)
-    {
-        printf("Error\nUsage ./cub3D <map .cub>\n");
-        return (1);
-    }
-    texture = malloc(sizeof(t_texture));
-    if (!texture)
-        return (0);
-    ft_memset(texture, 0, sizeof(t_texture));
+//     if (ac != 2)
+//     {
+//         printf("Error\nUsage ./cub3D <map .cub>\n");
+//         return (1);
+//     }
+//     texture = malloc(sizeof(t_texture));
+//     if (!texture)
+//         return (0);
+//     ft_memset(texture, 0, sizeof(t_texture));
     
-    if (!parse_input(av[1], texture))
-        return (0);
-    print_texture(texture); //DEBUG
-}
+//     if (!parse_input(av[1], texture))
+//         return (0);
+//     print_texture(texture); //DEBUG
+// }
