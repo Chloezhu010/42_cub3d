@@ -19,6 +19,39 @@ void    free_map(t_game *game)
     }
 }
 
+/* cleanup textures */
+void    cleanup_resource(t_map *map, t_texture *texture)
+{
+    int i;
+
+    // free texture path
+    if (texture)
+    {
+        if (texture->north_path)
+            free(texture->north_path);
+        if (texture->south_path)
+            free(texture->south_path);
+        if (texture->west_path)
+            free(texture->west_path);
+        if (texture->east_path)
+            free(texture->east_path);
+        free(texture);
+    }
+    // free map grid
+    if (map && map->grid)
+    {
+        i = 0;
+        while (i < map->height)
+        {
+            if (map->grid[i])
+                free(map->grid[i]);
+            i++;
+        }
+        free(map->grid);
+    }
+    if (map)
+        free(map);
+}
 
 /* handle program exit */
 void    cleanup(t_game *game)

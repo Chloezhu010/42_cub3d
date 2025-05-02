@@ -123,9 +123,6 @@ int parse_element_line(char *line, t_texture *texture)
     return (0);
 }
 
-/* add one line to the map */
-
-
 /* fill the map structure */
 void    build_map(char *file_path, t_map *map)
 {
@@ -135,6 +132,7 @@ void    build_map(char *file_path, t_map *map)
     fd = open(file_path, O_RDONLY);
     if (fd < 0)
         return ;
+    // parse mapline to grid
     line = get_next_line(fd);
     while (line)
     {
@@ -144,16 +142,50 @@ void    build_map(char *file_path, t_map *map)
         line = get_next_line(fd);
     }
     close(fd);
+    // find player's position (TBD)
+    process_player(map);
 }
 
-/* extract the player direction */
-
+/* extract the player direction
+    - return N/ S /W /E */
+char get_player_direction(t_map *map)
+{
+    if (map->player_x >= 0 && map->player_y >= 0
+        && map->player_y < map->height
+        && map->player_x < (int)ft_strlen(map->grid[map->player_y]))
+        return (map->grid[map->player_y][map->player_x]);
+    return (0);
+}
 
 /* init the player based on the input */
+void init_player_from_map(t_player *player, t_map *map)
+{
+    char direction
 
+    /* set player's pos based on map info */
+    player->pos_x = map->player_x;
+    player->pos_y = map->player_y;
+    /* init movement flags */
+    player->key_up = false;
+    player->key_down = false;
+    player->key_right = false;
+    player->key_left = false;
+    player->left_rotate = false;
+    player->right_rotate = false;
+    /* set initial angle based on player direction */
+    direction = get_player_direction(map);
+    if (direction == 'N')
+        player->angle = PI / 2;
+    else if (direction == 'S')
+        player->angle = PI * 3 / 2;
+    else if (direction == 'W')
+        player->angle = PI;
+    else if (direction == 'E')
+        player->angle = 0;
+}
 
 /* main parsing function */
-int parse_input(char *file_path, t_map *map, t_texture *texture)
+int parse_input(char *file_path, t_map *map, t_texture *texture, t_player *player)
 {
     int fd;
     char *line;
@@ -177,34 +209,12 @@ int parse_input(char *file_path, t_map *map, t_texture *texture)
     /* build the map */
     build_map(file_path, map);
     /* init player */
+    init_player_from_map(player, map);
 
     return (1);
 }
 
-/* cleanup */
 
-
-// test build_map
-int main(int ac, char **av)
-{
-    t_texture *texture;
-    t_map *map;
-    
-    if (ac != 2)
-    {
-        printf("Error\nUsage ./cub3D <map .cub>\n");
-        return (1);
-    }
-    texture = malloc(sizeof(t_texture));
-    map = malloc(sizeof(t_map));
-    if (!texture || !map)
-        return (0);
-    ft_memset(texture, 0, sizeof(t_texture));
-    ft_memset(map, 0, sizeof(t_map));
-    if (!parse_input(av[1], map, texture))
-        return (0);
-    print_map(map);
-}
 
 // // testing extract_texture_path
 // int main()
@@ -230,7 +240,6 @@ int main(int ac, char **av)
 // int main(int ac, char **av)
 // {
 //     t_texture *texture;
-    
 //     if (ac != 2)
 //     {
 //         printf("Error\nUsage ./cub3D <map .cub>\n");
@@ -240,8 +249,28 @@ int main(int ac, char **av)
 //     if (!texture)
 //         return (0);
 //     ft_memset(texture, 0, sizeof(t_texture));
-    
 //     if (!parse_input(av[1], texture))
 //         return (0);
 //     print_texture(texture); //DEBUG
+// }
+
+// // test build_map
+// int main(int ac, char **av)
+// {
+//     t_texture *texture;
+//     t_map *map; 
+//     if (ac != 2)
+//     {
+//         printf("Error\nUsage ./cub3D <map .cub>\n");
+//         return (1);
+//     }
+//     texture = malloc(sizeof(t_texture));
+//     map = malloc(sizeof(t_map));
+//     if (!texture || !map)
+//         return (0);
+//     ft_memset(texture, 0, sizeof(t_texture));
+//     ft_memset(map, 0, sizeof(t_map));
+//     if (!parse_input(av[1], map, texture))
+//         return (0);
+//     print_map(map);
 // }

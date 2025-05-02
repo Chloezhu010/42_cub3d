@@ -146,6 +146,7 @@ int check_texture_extension(char *texture);
 int is_map_line(char *line);
 int is_empty_line(char *line);
 int is_player(char c);
+int process_player(t_map *map);
 int validate_map(t_map *map);
 
 /* raycasting */
