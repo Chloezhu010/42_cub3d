@@ -323,18 +323,18 @@ int	cross_close(t_game *game)
 	exit(0);
 }
 
-int main(void)
-{
-    t_game  game;
+// int main(void)
+// {
+//     t_game  game;
 
-    init_game(&game);
-    /* key hooks for movement */
-    mlx_hook(game.win, 2, 1L<<0, key_press, &game);
-    mlx_hook(game.win, 3, 1L<<1, key_release, &game);
-    /* click hook for cross-close */
-    mlx_hook(game.win, 17, 0, cross_close, &game);
-    /* loop */
-    mlx_loop_hook(game.mlx, draw_loop, &game);
-    mlx_loop(game.mlx);
-    return (0);
-}
+//     init_game(&game);
+//     /* key hooks for movement */
+//     mlx_hook(game.win, 2, 1L<<0, key_press, &game);
+//     mlx_hook(game.win, 3, 1L<<1, key_release, &game);
+//     /* click hook for cross-close */
+//     mlx_hook(game.win, 17, 0, cross_close, &game);
+//     /* loop */
+//     mlx_loop_hook(game.mlx, draw_loop, &game);
+//     mlx_loop(game.mlx);
+//     return (0);
+// }

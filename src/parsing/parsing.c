@@ -91,22 +91,22 @@ int parse_element_line(char *line, t_texture *texture)
     // check for direction identifier
     if (ft_strstr(line, "NO"))
     {
-        texture->north = extract_texture_path(line);
+        texture->north_path = extract_texture_path(line);
         return (1);
     }
     else if (ft_strstr(line, "SO"))
     {
-        texture->south = extract_texture_path(line);
+        texture->south_path = extract_texture_path(line);
         return (1);
     }
     else if (ft_strstr(line, "WE"))
     {
-        texture->west = extract_texture_path(line);
+        texture->west_path = extract_texture_path(line);
         return (1);
     }
     else if (ft_strstr(line, "EA"))
     {
-        texture->east = extract_texture_path(line);
+        texture->east_path = extract_texture_path(line);
         return (1);
     }
     // check for color identifier
