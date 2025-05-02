@@ -23,7 +23,7 @@ SRC = $(PARSER_DIR)/input_validation.c \
 		$(SRC_DIR)/main_test.c \
 		$(SRC_DIR)/player_test.c \
 		$(SRC_DIR)/cleanup.c \
-
+		$(SRC_DIR)/debug_utils.c
 
 OBJ = $(SRC:.c=.o)
 

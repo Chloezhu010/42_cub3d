@@ -80,7 +80,7 @@ typedef struct s_texture
     char    *west;
     char    *east;
     int     floor_color;
-    int     celling_color;
+    int     ceiling_color;
 }   t_texture;
 
 /* player data */
@@ -154,6 +154,10 @@ void    init_game(t_game *game);
 int draw_loop(t_game *game);
 int	cross_close(t_game *game);
 void    cleanup(t_game *game);
+
+
+/* debug utils */
+void    print_texture(t_texture *texture);
 
 
 #endif
