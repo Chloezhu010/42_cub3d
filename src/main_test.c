@@ -102,22 +102,33 @@ void    draw_square(int x, int y, int size, int color, t_game *game)
         put_pixel(x + i, y + size, color, game);
 }
 
-// /* draw the 2D map */
-// void    draw_map(t_game *game)
-// {
-//     char **map = game->map;
-//     int color = 0x0000FF;
+/* draw the 2D map */
+void    draw_map(t_game *game)
+{
+    char **map = game->map;
+    int color = 0x0000FF;
 
-//     for (int y = 0; map[y]; y++)
-//         for (int x = 0; map[y][x]; x++)
-//             if (map[y][x] == '1')
-//                 draw_square(x * BLOCK, y * BLOCK, BLOCK, color, game);
-// }
+    for (int y = 0; map[y]; y++)
+        for (int x = 0; map[y][x]; x++)
+            if (map[y][x] == '1')
+                draw_square(x * BLOCK, y * BLOCK, BLOCK, color, game);
+}
 
 void    init_game(t_game *game)
 {
     init_player(&game->player); // init player
     game->map = get_map(); // init map
+    
+    // 设置纹理路径
+    game->textures.north_path = ft_strdup("textures/wall_texture_north.xpm");
+    game->textures.south_path = ft_strdup("textures/wall_texture_south.xpm");
+    game->textures.east_path = ft_strdup("textures/wall_texture_east.xpm");
+    game->textures.west_path = ft_strdup("textures/wall_texture_west.xpm");
+    
+    // 设置地板和天花板颜色
+    game->textures.ceiling_color = 0x87CEEB; // 天蓝色
+    game->textures.floor_color = 0x8B4513;   // 棕色
+    
     /* init mlx, win, data */
     game->mlx = mlx_init();
     if (!game->mlx)
@@ -144,6 +155,14 @@ void    init_game(t_game *game)
     if (!game->data)
     {
         ft_printf("mlx_get_data_addr failed\n");
+        cleanup(game);
+        exit(1);
+    }
+    
+    // 加载纹理
+    if (!load_all_textures(game))
+    {
+        ft_printf("Failed to load textures\n");
         cleanup(game);
         exit(1);
     }
@@ -195,48 +214,67 @@ void draw_line(t_player *player, t_game *game, float start_x, int i)
     
     if(!DEBUG)
     {
-        // Determine wall face using last step
+        // 确定墙面
         t_wall_side wall_side = get_wall_side(ray_x, ray_y, step_x, step_y);
         
-        // Get appropriate color
-        int wall_color = get_wall_color(wall_side);
-        
+        // 计算墙壁高度
         float dist = fixed_dist(player->pos_x, player->pos_y, ray_x, ray_y, game);
         float height = (BLOCK / dist) * (WIDTH / 2);
         int start_y = (HEIGHT - height) / 2;
         int end = start_y + height;
         
-        // Apply shading based on distance
-        float shade = 1.0f - (dist / (WIDTH / 2));
-        if (shade < 0.2f) shade = 0.2f;
-        if (shade > 1.0f) shade = 1.0f;
+        // 纹理映射计算
+        t_img *wall_texture = get_wall_texture(game, wall_side);
         
-        int r = ((wall_color >> 16) & 0xFF) * shade;
-        int g = ((wall_color >> 8) & 0xFF) * shade;
-        int b = (wall_color & 0xFF) * shade;
-        int shaded_color = (r << 16) | (g << 8) | b;
+        // 计算墙面上的水平纹理坐标 (wallX)
+        float wallX;
+        if (wall_side == WALL_EAST || wall_side == WALL_WEST)
+            wallX = ray_y - floor(ray_y / BLOCK) * BLOCK;
+        else
+            wallX = ray_x - floor(ray_x / BLOCK) * BLOCK;
         
-        // Ensure bounds
+        // 计算纹理的x坐标
+        int texX = (int)(wallX * wall_texture->width / BLOCK);
+        if ((wall_side == WALL_EAST || wall_side == WALL_WEST) && step_x > 0)
+            texX = wall_texture->width - texX - 1;
+        if ((wall_side == WALL_NORTH || wall_side == WALL_SOUTH) && step_y < 0)
+            texX = wall_texture->width - texX - 1;
+        
+        // 确保边界
         if (start_y < 0) start_y = 0;
         if (end > HEIGHT) end = HEIGHT;
         
-        // Define ceiling and floor colors
-        int ceiling_color = 0x87CEEB; // Sky blue for ceiling
-        int floor_color = 0x8B4513;   // Saddle brown for floor
-        
-        // Draw ceiling (from top to wall start)
+        // 绘制天花板
         for (int y = 0; y < start_y; y++) {
-            put_pixel(i, y, ceiling_color, game);
+            put_pixel(i, y, game->textures.ceiling_color, game);
         }
         
-        // Draw wall (as before)
+        // 绘制纹理墙壁
+        float step = (float)wall_texture->height / height;
+        float texPos = 0;
+        
         for (int y = start_y; y < end; y++) {
+            int texY = (int)texPos & (wall_texture->height - 1);
+            texPos += step;
+            
+            int color = get_texture_pixel(wall_texture, texX, texY);
+            
+            // 应用距离衰减
+            float shade = 1.0f - (dist / (WIDTH / 2));
+            if (shade < 0.2f) shade = 0.2f;
+            if (shade > 1.0f) shade = 1.0f;
+            
+            int r = ((color >> 16) & 0xFF) * shade;
+            int g = ((color >> 8) & 0xFF) * shade;
+            int b = (color & 0xFF) * shade;
+            int shaded_color = (r << 16) | (g << 8) | b;
+            
             put_pixel(i, y, shaded_color, game);
         }
         
-        // Draw floor (from wall end to bottom)
+        // 绘制地板
         for (int y = end; y < HEIGHT; y++) {
-            put_pixel(i, y, floor_color, game);
+            put_pixel(i, y, game->textures.floor_color, game);
         }
     }
 }
@@ -285,18 +323,18 @@ int	cross_close(t_game *game)
 	exit(0);
 }
 
-// int main(void)
-// {
-//     t_game  game;
+int main(void)
+{
+    t_game  game;
 
-//     init_game(&game);
-//     /* key hooks for movement */
-//     mlx_hook(game.win, 2, 1L<<0, key_press, &game);
-//     mlx_hook(game.win, 3, 1L<<1, key_release, &game);
-//     /* click hook for cross-close */
-//     mlx_hook(game.win, 17, 0, cross_close, &game);
-//     /* loop */
-//     mlx_loop_hook(game.mlx, draw_loop, &game);
-//     mlx_loop(game.mlx);
-//     return (0);
-// }
+    init_game(&game);
+    /* key hooks for movement */
+    mlx_hook(game.win, 2, 1L<<0, key_press, &game);
+    mlx_hook(game.win, 3, 1L<<1, key_release, &game);
+    /* click hook for cross-close */
+    mlx_hook(game.win, 17, 0, cross_close, &game);
+    /* loop */
+    mlx_loop_hook(game.mlx, draw_loop, &game);
+    mlx_loop(game.mlx);
+    return (0);
+}
