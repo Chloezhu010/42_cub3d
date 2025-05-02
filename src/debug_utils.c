@@ -1,4 +1,4 @@
-#include "../incl/cub3D.h"
+// #include "../incl/cub3D.h"
 
 void    print_texture(t_texture *texture)
 {

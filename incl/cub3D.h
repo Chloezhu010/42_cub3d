@@ -72,15 +72,31 @@ typedef struct s_component
     t_map   map;
 }   t_component;
 
+/* 纹理图像数据 */
+typedef struct s_img
+{
+    void    *img;
+    char    *addr;
+    int     bits_per_pixel;
+    int     line_length;
+    int     endian;
+    int     width;
+    int     height;
+} t_img;
+
 /* texture data */
 typedef struct s_texture
 {
-    char    *north;
-    char    *south;
-    char    *west;
-    char    *east;
+    char    *north_path;
+    char    *south_path;
+    char    *west_path;
+    char    *east_path;
     int     floor_color;
     int     ceiling_color;
+    t_img   north_img;
+    t_img   south_img;
+    t_img   west_img;
+    t_img   east_img;
 }   t_texture;
 
 /* player data */
@@ -112,13 +128,14 @@ typedef struct s_game
     int endian;
     t_player player;
     char    **map;
+    t_texture textures;
 }   t_game;
 
 /* input validation*/
 int check_input(char *file_path);
 int add_line_to_map(t_map *map, char *line);
 
-/* input validation utlis */
+/* map validation utlis */
 char    *ft_strstr(const char *big, char *small);
 int is_space(char c);
 int is_valid_rgb(char *line);
@@ -136,6 +153,12 @@ int validate_map(t_map *map);
 /* rendering */
 
 /* texture management */
+void init_img(t_img *img);
+int load_texture(t_game *game, t_img *img, char *path);
+int load_all_textures(t_game *game);
+void cleanup_texture(t_game *game);
+int get_texture_pixel(t_img *img, int x, int y);
+t_img *get_wall_texture(t_game *game, t_wall_side side);
 
 /* utils */
 
@@ -150,9 +173,6 @@ void    move_player(t_player *player, t_game *game);
 bool touch(float px, float py, t_game *game);
 
 /* main test */
-void    init_game(t_game *game);
-int draw_loop(t_game *game);
-int	cross_close(t_game *game);
 void    cleanup(t_game *game);
 
 
