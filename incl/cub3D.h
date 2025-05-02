@@ -114,8 +114,11 @@ typedef struct s_game
     char    **map;
 }   t_game;
 
+/* input validation*/
+int check_input(char *file_path);
+void    print_map(t_map *map); //for debug
 
-/* map validation utlis */
+/* input validation utlis */
 char    *ft_strstr(const char *big, char *small);
 int is_space(char c);
 int is_valid_rgb(char *line);
@@ -147,6 +150,9 @@ void    move_player(t_player *player, t_game *game);
 bool touch(float px, float py, t_game *game);
 
 /* main test */
+void    init_game(t_game *game);
+int draw_loop(t_game *game);
+int	cross_close(t_game *game);
 void    cleanup(t_game *game);
 
 
