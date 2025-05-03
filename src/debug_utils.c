@@ -31,6 +31,8 @@ void    print_map(t_map *map)
     }
     printf("map height: %d\n", map->height);
     printf("map width: %d\n", map->width);
+    printf("map player x: %d\n", map->player_x);
+    printf("map player y: %d\n", map->player_y);
 }
 
 void    print_player(t_player *player)
@@ -39,10 +41,10 @@ void    print_player(t_player *player)
     printf("player pos x: %f\n", player->pos_x);
     printf("player pos y: %f\n", player->pos_y);
     printf("player angle: %f * PI\n", player->angle / PI);
-    printf("player key up: %d\n", player->key_up);
-    printf("player key up: %d\n", player->key_down);
-    printf("player key up: %d\n", player->key_left);
-    printf("player key up: %d\n", player->key_right);
-    printf("player key up: %d\n", player->left_rotate);
-    printf("player key up: %d\n", player->right_rotate);
+    // printf("player key up: %d\n", player->key_up);
+    // printf("player key up: %d\n", player->key_down);
+    // printf("player key up: %d\n", player->key_left);
+    // printf("player key up: %d\n", player->key_right);
+    // printf("player key up: %d\n", player->left_rotate);
+    // printf("player key up: %d\n", player->right_rotate);
 }

@@ -162,9 +162,11 @@ void init_player_from_map(t_player *player, t_map *map)
 {
     char direction;
 
-    /* set player's pos based on map info */
-    player->pos_x = map->player_x;
-    player->pos_y = map->player_y;
+    /* set player's pos based on map info
+        - need to be be pixel coordinates rather than grid ones
+    */
+    player->pos_x = map->player_x * BLOCK + BLOCK / 2;
+    player->pos_y = map->player_y * BLOCK + BLOCK / 2;
     /* init movement flags */
     player->key_up = false;
     player->key_down = false;
@@ -174,9 +176,9 @@ void init_player_from_map(t_player *player, t_map *map)
     player->right_rotate = false;
     /* set initial angle based on player direction */
     direction = get_player_direction(map);
-    if (direction == 'N')
+    if (direction == 'S')
         player->angle = PI / 2;
-    else if (direction == 'S')
+    else if (direction == 'N')
         player->angle = PI * 3 / 2;
     else if (direction == 'W')
         player->angle = PI;
