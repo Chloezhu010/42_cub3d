@@ -39,4 +39,10 @@ void    print_player(t_player *player)
     printf("player pos x: %f\n", player->pos_x);
     printf("player pos y: %f\n", player->pos_y);
     printf("player angle: %f * PI\n", player->angle / PI);
+    printf("player key up: %d\n", player->key_up);
+    printf("player key up: %d\n", player->key_down);
+    printf("player key up: %d\n", player->key_left);
+    printf("player key up: %d\n", player->key_right);
+    printf("player key up: %d\n", player->left_rotate);
+    printf("player key up: %d\n", player->right_rotate);
 }

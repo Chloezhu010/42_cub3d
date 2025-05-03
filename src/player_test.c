@@ -1,19 +1,19 @@
 #include "../incl/cub3D.h"
 
-void    init_player(t_player *player)
-{
-    player->pos_x = WIDTH / 2;
-    player->pos_y = HEIGHT / 2;
-    player->angle = PI / 2; // initial angle, facing upwards
+// void    init_player(t_player *player)
+// {
+//     player->pos_x = WIDTH / 2;
+//     player->pos_y = HEIGHT / 2;
+//     player->angle = PI / 2; // initial angle, facing upwards
 
-    player->key_up = false;
-    player->key_down = false;
-    player->key_right = false;
-    player->key_left = false;
+//     player->key_up = false;
+//     player->key_down = false;
+//     player->key_right = false;
+//     player->key_left = false;
 
-    player->left_rotate = false;
-    player->right_rotate = false;
-}
+//     player->left_rotate = false;
+//     player->right_rotate = false;
+// }
 
 int key_press(int keycode, t_game *game)
 {

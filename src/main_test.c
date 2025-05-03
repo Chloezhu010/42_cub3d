@@ -1,22 +1,22 @@
 #include "../incl/cub3D.h"
 
-/* initialize map */
-char    **get_map(void)
-{
-    char **map = malloc(sizeof(char *) * 11);
-    map[0] = ft_strdup("111111111111111");
-    map[1] = ft_strdup("100000000000001");
-    map[2] = ft_strdup("100000000000001");
-    map[3] = ft_strdup("100000100000001");
-    map[4] = ft_strdup("100000000000001");
-    map[5] = ft_strdup("100000010000001");
-    map[6] = ft_strdup("100001000000001");
-    map[7] = ft_strdup("100000000000001");
-    map[8] = ft_strdup("100000000000001");
-    map[9] = ft_strdup("111111111111111");
-    map[10] = NULL;
-    return (map);
-}
+// /* initialize map */
+// char    **get_map(void)
+// {
+//     char **map = malloc(sizeof(char *) * 11);
+//     map[0] = ft_strdup("111111111111111");
+//     map[1] = ft_strdup("100000000000001");
+//     map[2] = ft_strdup("100000000000001");
+//     map[3] = ft_strdup("100000100000001");
+//     map[4] = ft_strdup("100000000000001");
+//     map[5] = ft_strdup("100000010000001");
+//     map[6] = ft_strdup("100001000000001");
+//     map[7] = ft_strdup("100000000000001");
+//     map[8] = ft_strdup("100000000000001");
+//     map[9] = ft_strdup("111111111111111");
+//     map[10] = NULL;
+//     return (map);
+// }
 
 t_wall_side get_wall_side(float ray_x, float ray_y, float dx, float dy)
 {
@@ -133,7 +133,6 @@ void    init_game(t_game *game)
         cleanup(game);
         exit(1);
     }
-    
     // 加载纹理
     if (!load_all_textures(game))
     {
@@ -141,6 +140,8 @@ void    init_game(t_game *game)
         cleanup(game);
         exit(1);
     }
+    // else
+    //     print_texture(&game->textures);
 
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
@@ -300,7 +301,6 @@ int	cross_close(t_game *game)
 // int main(void)
 // {
 //     t_game  game;
-
 //     init_game(&game);
 //     /* key hooks for movement */
 //     mlx_hook(game.win, 2, 1L<<0, key_press, &game);
@@ -317,9 +317,6 @@ int	cross_close(t_game *game)
 int main(int ac, char **av)
 {
     t_game  *game;
-    // t_map   *map;
-    // t_texture   *texture;
-    // t_player    *player;
 
     /* input check */
     if (ac != 2)
@@ -355,14 +352,15 @@ int main(int ac, char **av)
     print_texture(&game->textures);
     print_map(&game->map);
     print_player(&game->player);
-
-    // /* key hooks for movement */
-    // mlx_hook(game.win, 2, 1L<<0, key_press, &game);
-    // mlx_hook(game.win, 3, 1L<<1, key_release, &game);
-    // /* click hook for cross-close */
-    // mlx_hook(game.win, 17, 0, cross_close, &game);
-    // /* loop */
-    // mlx_loop_hook(game.mlx, draw_loop, &game);
-    // mlx_loop(game.mlx);
+    /* init game */
+    init_game(game);
+    /* key hooks for movement */
+    mlx_hook(game->win, 2, 1L<<0, key_press, game);
+    mlx_hook(game->win, 3, 1L<<1, key_release, game);
+    /* click hook for cross-close */
+    mlx_hook(game->win, 17, 0, cross_close, game);
+    /* loop */
+    mlx_loop_hook(game->mlx, draw_loop, game);
+    mlx_loop(game->mlx);
     return (0);
 }
