@@ -1,23 +1,5 @@
 #include "../incl/cub3D.h"
 
-// /* initialize map */
-// char    **get_map(void)
-// {
-//     char **map = malloc(sizeof(char *) * 11);
-//     map[0] = ft_strdup("111111111111111");
-//     map[1] = ft_strdup("100000000000001");
-//     map[2] = ft_strdup("100000000000001");
-//     map[3] = ft_strdup("100000100000001");
-//     map[4] = ft_strdup("100000000000001");
-//     map[5] = ft_strdup("100000010000001");
-//     map[6] = ft_strdup("100001000000001");
-//     map[7] = ft_strdup("100000000000001");
-//     map[8] = ft_strdup("100000000000001");
-//     map[9] = ft_strdup("111111111111111");
-//     map[10] = NULL;
-//     return (map);
-// }
-
 t_wall_side get_wall_side(float ray_x, float ray_y, float dx, float dy)
 {
     int map_x = ray_x / BLOCK;
@@ -91,19 +73,6 @@ void    put_pixel(int x, int y, int color, t_game *game)
 
 void    init_game(t_game *game)
 {  
-    // init_player(&game->player); // init player
-    // game->map = get_map(); // init map
-    
-    // // 设置纹理路径
-    // game->textures.north_path = ft_strdup("textures/wall_texture_north.xpm");
-    // game->textures.south_path = ft_strdup("textures/wall_texture_south.xpm");
-    // game->textures.east_path = ft_strdup("textures/wall_texture_east.xpm");
-    // game->textures.west_path = ft_strdup("textures/wall_texture_west.xpm");
-    
-    // // 设置地板和天花板颜色
-    // game->textures.ceiling_color = 0x87CEEB; // 天蓝色
-    // game->textures.floor_color = 0x8B4513;   // 棕色
-    
     /* init mlx, win, data */
     game->mlx = mlx_init();
     if (!game->mlx)
@@ -140,9 +109,6 @@ void    init_game(t_game *game)
         cleanup(game);
         exit(1);
     }
-    // else
-    //     print_texture(&game->textures);
-
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
@@ -160,11 +126,10 @@ bool touch(float px, float py, t_game *game)
     int x;
     int y;
 
-    //player pos / BLOCK size
+    // player pos / BLOCK size
     x = px / BLOCK;
     y = py / BLOCK;
     if (game->map.grid[y][x] == '1')
-    // if (game->map[y][x] == '1')
         return (true);
     return (false);
 }
@@ -362,5 +327,9 @@ int main(int ac, char **av)
     /* loop */
     mlx_loop_hook(game->mlx, draw_loop, game);
     mlx_loop(game->mlx);
+
+    /* resource cleanup & exit */
+
+
     return (0);
 }

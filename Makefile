@@ -3,7 +3,6 @@ NAME = cub3D
 
 # dir
 SRC_DIR = ./src
-MAIN_DIR = $(SRC_DIR)/main
 PARSER_DIR = $(SRC_DIR)/parsing
 LIBFT_DIR = $(SRC_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a

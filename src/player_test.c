@@ -1,20 +1,5 @@
 #include "../incl/cub3D.h"
 
-// void    init_player(t_player *player)
-// {
-//     player->pos_x = WIDTH / 2;
-//     player->pos_y = HEIGHT / 2;
-//     player->angle = PI / 2; // initial angle, facing upwards
-
-//     player->key_up = false;
-//     player->key_down = false;
-//     player->key_right = false;
-//     player->key_left = false;
-
-//     player->left_rotate = false;
-//     player->right_rotate = false;
-// }
-
 int key_press(int keycode, t_game *game)
 {
     t_player *player = &game->player;
@@ -62,15 +47,6 @@ void    move_player(t_player *player, t_game *game)
 {
     int speed = 3;
 
-    // /* 4-direction movement */
-    // if (player->key_up)
-    //     player->pos_y -= speed;
-    // if (player->key_down)
-    //     player->pos_y += speed;
-    // if (player->key_left)
-    //     player->pos_x -= speed;
-    // if (player->key_right)
-    //     player->pos_x += speed;
     /* rotation movement */
     float angle_speed = 0.03;// rotation speed in radians per frame, ~1.72 degree per frame
     float cos_angle = cos(player->angle);
