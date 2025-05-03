@@ -89,45 +89,20 @@ void    put_pixel(int x, int y, int color, t_game *game)
     game->data[index + 2] = (color >> 16) & 0xFF;
 }
 
-/* draw a square represents the player */
-void    draw_square(int x, int y, int size, int color, t_game *game)
-{
-    for (int i = 0; i < size; i++)
-        put_pixel(x + i, y, color, game);
-    for (int i = 0; i < size; i++)
-        put_pixel(x, y + i, color, game);
-    for (int i = 0; i < size; i++)
-        put_pixel(x + size, y + i, color, game);
-    for (int i = 0; i < size; i++)
-        put_pixel(x + i, y + size, color, game);
-}
-
-/* draw the 2D map */
-void    draw_map(t_game *game)
-{
-    char **map = game->map;
-    int color = 0x0000FF;
-
-    for (int y = 0; map[y]; y++)
-        for (int x = 0; map[y][x]; x++)
-            if (map[y][x] == '1')
-                draw_square(x * BLOCK, y * BLOCK, BLOCK, color, game);
-}
-
 void    init_game(t_game *game)
-{
-    init_player(&game->player); // init player
-    game->map = get_map(); // init map
+{  
+    // init_player(&game->player); // init player
+    // game->map = get_map(); // init map
     
-    // 设置纹理路径
-    game->textures.north_path = ft_strdup("textures/wall_texture_north.xpm");
-    game->textures.south_path = ft_strdup("textures/wall_texture_south.xpm");
-    game->textures.east_path = ft_strdup("textures/wall_texture_east.xpm");
-    game->textures.west_path = ft_strdup("textures/wall_texture_west.xpm");
+    // // 设置纹理路径
+    // game->textures.north_path = ft_strdup("textures/wall_texture_north.xpm");
+    // game->textures.south_path = ft_strdup("textures/wall_texture_south.xpm");
+    // game->textures.east_path = ft_strdup("textures/wall_texture_east.xpm");
+    // game->textures.west_path = ft_strdup("textures/wall_texture_west.xpm");
     
-    // 设置地板和天花板颜色
-    game->textures.ceiling_color = 0x87CEEB; // 天蓝色
-    game->textures.floor_color = 0x8B4513;   // 棕色
+    // // 设置地板和天花板颜色
+    // game->textures.ceiling_color = 0x87CEEB; // 天蓝色
+    // game->textures.floor_color = 0x8B4513;   // 棕色
     
     /* init mlx, win, data */
     game->mlx = mlx_init();
@@ -186,8 +161,9 @@ bool touch(float px, float py, t_game *game)
 
     //player pos / BLOCK size
     x = px / BLOCK;
-    y = py / BLOCK; 
-    if (game->map[y][x] == '1')
+    y = py / BLOCK;
+    if (game->map.grid[y][x] == '1')
+    // if (game->map[y][x] == '1')
         return (true);
     return (false);
 }
@@ -296,9 +272,6 @@ int draw_loop(t_game *game)
     move_player(player, game);
     /* clear the screen */
     clear_image(game);
-    /* draw the square */
-    // draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, game);
-    // draw_map(game);
     /* draw the ray & stop if it touches the wall */
 	float fraction = PI / 3 / WIDTH;
     float start_x = player->angle + PI / 6;
@@ -323,6 +296,7 @@ int	cross_close(t_game *game)
 	exit(0);
 }
 
+// /* test main */
 // int main(void)
 // {
 //     t_game  game;
@@ -338,3 +312,57 @@ int	cross_close(t_game *game)
 //     mlx_loop(game.mlx);
 //     return (0);
 // }
+
+/* updated main */
+int main(int ac, char **av)
+{
+    t_game  *game;
+    // t_map   *map;
+    // t_texture   *texture;
+    // t_player    *player;
+
+    /* input check */
+    if (ac != 2)
+    {
+        printf("Error\nUsage ./cub3D <map .cub>\n");
+        return (1);
+    }
+    /* map validation */
+        /* check map's file extension */
+    if (!check_file_extension(av[1]))
+    {
+        printf("Error\nFile must be .cub file\n");
+        return (1);
+    }
+        /* validate map */
+    if (!check_input(av[1]))
+    {
+        printf("Error\nInvalid input\n");
+        return (1);
+    }
+    /* init struct */
+    game = malloc(sizeof(t_game));
+    if (!game)
+    {
+        printf("Error: Malloc failed\n");
+        return (1);
+    }
+    ft_memset(game, 0, sizeof(t_game));
+    /* parse input */
+    if (!parse_input(av[1], &game->map, &game->textures, &game->player))
+        return (0);
+    /* DEBUG print */
+    print_texture(&game->textures);
+    print_map(&game->map);
+    print_player(&game->player);
+
+    // /* key hooks for movement */
+    // mlx_hook(game.win, 2, 1L<<0, key_press, &game);
+    // mlx_hook(game.win, 3, 1L<<1, key_release, &game);
+    // /* click hook for cross-close */
+    // mlx_hook(game.win, 17, 0, cross_close, &game);
+    // /* loop */
+    // mlx_loop_hook(game.mlx, draw_loop, &game);
+    // mlx_loop(game.mlx);
+    return (0);
+}

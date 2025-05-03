@@ -142,7 +142,7 @@ void    build_map(char *file_path, t_map *map)
         line = get_next_line(fd);
     }
     close(fd);
-    // find player's position (TBD)
+    // find player's position
     process_player(map);
 }
 
@@ -160,7 +160,7 @@ char get_player_direction(t_map *map)
 /* init the player based on the input */
 void init_player_from_map(t_player *player, t_map *map)
 {
-    char direction
+    char direction;
 
     /* set player's pos based on map info */
     player->pos_x = map->player_x;
@@ -214,14 +214,11 @@ int parse_input(char *file_path, t_map *map, t_texture *texture, t_player *playe
     return (1);
 }
 
-
-
 // // testing extract_texture_path
 // int main()
 // {
 //     char *line1 = "NO textures/test/north.xpm";
 //     char *line2 = "   EA      textures/test/east.xpm   ";
-
 //     printf("line1: %s\n", extract_texture_path(line1));
 //     printf("line2: %s\n", extract_texture_path(line2));
 // }
@@ -231,7 +228,6 @@ int parse_input(char *file_path, t_map *map, t_texture *texture, t_player *playe
 // {
 //     char *line1 = "     F 20,           20,             20";
 //     char *line2 = "C 255,    0, 0";
-
 //     printf("line1: %X\n", parse_rgb(line1));
 //     printf("line2: %X\n", parse_rgb(line2));
 // }
@@ -254,23 +250,30 @@ int parse_input(char *file_path, t_map *map, t_texture *texture, t_player *playe
 //     print_texture(texture); //DEBUG
 // }
 
-// // test build_map
+// // test build_map, init_player_from_map
 // int main(int ac, char **av)
 // {
 //     t_texture *texture;
 //     t_map *map; 
+//     t_player *player;
 //     if (ac != 2)
 //     {
 //         printf("Error\nUsage ./cub3D <map .cub>\n");
 //         return (1);
 //     }
+//     // init the struct
 //     texture = malloc(sizeof(t_texture));
 //     map = malloc(sizeof(t_map));
-//     if (!texture || !map)
+//     player = malloc(sizeof(t_player));
+//     if (!texture || !map || !player)
 //         return (0);
 //     ft_memset(texture, 0, sizeof(t_texture));
 //     ft_memset(map, 0, sizeof(t_map));
-//     if (!parse_input(av[1], map, texture))
+//     ft_memset(player, 0, sizeof(t_player));
+//     // parse input
+//     if (!parse_input(av[1], map, texture, player))
 //         return (0);
+//     // debug print
 //     print_map(map);
+//     print_player(player);
 // }

@@ -37,7 +37,6 @@ int main(int ac, char **av)
         printf("Error: Malloc failed\n");
         return (1);
     }
-    // init with zero
     ft_memset(map, 0, sizeof(t_map));
     ft_memset(texture, 0, sizeof(t_texture));
     ft_memset(player, 0, sizeof(t_player));

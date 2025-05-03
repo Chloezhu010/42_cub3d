@@ -5,17 +5,17 @@ void    free_map(t_game *game)
 {
     int i;
 
-    if (game->map != NULL)
+    if (game->map.grid != NULL)
     {
         i = 0;
         while (i < 11)
         {
-            if (game->map[i] != NULL)
-                free(game->map[i]);
+            if (game->map.grid[i] != NULL)
+                free(game->map.grid[i]);
             i++;
         }
-        free(game->map);
-        game->map = NULL;
+        free(game->map.grid);
+        game->map.grid = NULL;
     }
 }
 

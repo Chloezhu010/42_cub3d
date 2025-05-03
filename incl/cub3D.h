@@ -127,7 +127,7 @@ typedef struct s_game
     int size_line; // bytes per row (img width)
     int endian;
     t_player player;
-    char    **map;
+    t_map map;
     t_texture textures;
 }   t_game;
 
@@ -148,6 +148,10 @@ int is_empty_line(char *line);
 int is_player(char c);
 int process_player(t_map *map);
 int validate_map(t_map *map);
+
+/* parsing */
+int parse_input(char *file_path, t_map *map,
+        t_texture *texture, t_player *player);
 
 /* raycasting */
 
@@ -180,5 +184,6 @@ void    cleanup(t_game *game);
 /* debug utils */
 void    print_texture(t_texture *texture);
 void    print_map(t_map *map);
+void    print_player(t_player *player);
 
 #endif

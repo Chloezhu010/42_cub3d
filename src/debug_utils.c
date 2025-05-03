@@ -2,6 +2,7 @@
 
 void    print_texture(t_texture *texture)
 {
+    printf("=== texture info ===\n");
     printf("north texture: %s\n", texture->north_path);
     printf("south texture: %s\n", texture->south_path);
     printf("west texture: %s\n", texture->west_path);
@@ -15,6 +16,7 @@ void    print_map(t_map *map)
     int i;
     int j;
 
+    printf("=== map info ===\n");
     i = 0;
     while (i < map->height)
     {
@@ -27,4 +29,14 @@ void    print_map(t_map *map)
         printf("\n");
         i++;
     }
+    printf("map height: %d\n", map->height);
+    printf("map width: %d\n", map->width);
+}
+
+void    print_player(t_player *player)
+{
+    printf("=== player info ===\n");
+    printf("player pos x: %f\n", player->pos_x);
+    printf("player pos y: %f\n", player->pos_y);
+    printf("player angle: %f * PI\n", player->angle / PI);
 }
