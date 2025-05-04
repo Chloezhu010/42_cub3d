@@ -6,7 +6,7 @@
 /*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:26:22 by auzou             #+#    #+#             */
-/*   Updated: 2025/05/04 14:18:51 by czhu             ###   ########.fr       */
+/*   Updated: 2025/05/04 14:32:43 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	key_release(int keycode, t_game *game)
 /* helper function for key_up & key_down */
 void	key_up_down(t_player *player, t_game *game, int speed)
 {
-	float cos_angle;
-	float sin_angle;
+	float	cos_angle;
+	float	sin_angle;
 
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
@@ -82,8 +82,8 @@ void	key_up_down(t_player *player, t_game *game, int speed)
 /* helper function for key_left & key_right */
 void	key_left_right(t_player *player, t_game *game, int speed)
 {
-	float cos_angle;
-	float sin_angle;
+	float	cos_angle;
+	float	sin_angle;
 
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
@@ -100,13 +100,13 @@ void	key_left_right(t_player *player, t_game *game, int speed)
 		player->pos_y -= cos_angle * speed;
 	}
 }
-	
+
 void	move_player(t_player *player, t_game *game)
 {
-	int speed;
-	float angle_speed;
-	float cos_angle;
-	float sin_angle;
+	int		speed;
+	float	angle_speed;
+	float	cos_angle;
+	float	sin_angle;
 
 	speed = 3;
 	angle_speed = 0.03;
@@ -122,28 +122,4 @@ void	move_player(t_player *player, t_game *game)
 		player->angle = 2 * PI;
 	key_up_down(player, game, speed);
 	key_left_right(player, game, speed);
-	// if (player->key_up && !touch(player->pos_x + (cos_angle * speed)
-	// 		, player->pos_y + (sin_angle * speed), game))
-	// {
-	// 	player->pos_x += cos_angle * speed;
-	// 	player->pos_y += sin_angle * speed;
-	// }
-	// if (player->key_down && !touch(player->pos_x - (cos_angle * speed)
-	// 		, player->pos_y - (sin_angle * speed), game))
-	// {
-	// 	player->pos_x -= cos_angle * speed;
-	// 	player->pos_y -= sin_angle * speed;
-	// }
-	// if (player->key_left && !touch(player->pos_x - (sin_angle * speed)
-	// 		, player->pos_y + (cos_angle * speed), game))
-	// {
-	// 	player->pos_x -= sin_angle * speed;
-	// 	player->pos_y += cos_angle * speed;
-	// }
-	// if (player->key_right && !touch(player->pos_x + (sin_angle * speed)
-	// 		, player->pos_y - (cos_angle * speed), game))
-	// {
-	// 	player->pos_x += sin_angle * speed;
-	// 	player->pos_y -= cos_angle * speed;
-	// }
 }

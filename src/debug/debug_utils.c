@@ -6,7 +6,7 @@
 /*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:58:07 by auzou             #+#    #+#             */
-/*   Updated: 2025/05/04 11:41:51 by czhu             ###   ########.fr       */
+/*   Updated: 2025/05/04 14:37:04 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,4 @@ void	print_player(t_player *player)
 	printf("player pos x: %f\n", player->pos_x);
 	printf("player pos y: %f\n", player->pos_y);
 	printf("player angle: %f * PI\n", player->angle / PI);
-	// printf("player key up: %d\n", player->key_up);
-	// printf("player key up: %d\n", player->key_down);
-	// printf("player key up: %d\n", player->key_left);
-	// printf("player key up: %d\n", player->key_right);
-	// printf("player key up: %d\n", player->left_rotate);
-	// printf("player key up: %d\n", player->right_rotate);
 }

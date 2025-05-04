@@ -7,6 +7,7 @@ PARSER_DIR = $(SRC_DIR)/parsing
 CLEANUP_DIR = $(SRC_DIR)/cleanup
 PLAYER_DIR = $(SRC_DIR)/player_movement
 TEXTURE_DIR = $(SRC_DIR)/texture
+3D_DIR = $(SRC_DIR)/3D
 DEBUG_DIR = $(SRC_DIR)/debug
 LIBFT_DIR = $(SRC_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -24,10 +25,13 @@ SRC = $(PARSER_DIR)/input_validation.c \
 		$(PARSER_DIR)/map_check.c \
 		$(PARSER_DIR)/parsing.c \
 		$(SRC_DIR)/main.c \
+		$(SRC_DIR)/main_utils.c \
 		$(PLAYER_DIR)/player_key.c \
 		$(CLEANUP_DIR)/cleanup.c \
 		$(DEBUG_DIR)/debug_utils.c \
 		$(TEXTURE_DIR)/texture.c \
+		$(3D_DIR)/3d.c \
+		
 
 OBJ = $(SRC:.c=.o)
 

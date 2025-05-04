@@ -6,11 +6,12 @@
 /*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:55:21 by auzou             #+#    #+#             */
-/*   Updated: 2025/05/04 14:11:41 by czhu             ###   ########.fr       */
+/*   Updated: 2025/05/04 14:36:40 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/cub3D.h"
+
 /* free the map when error or exit */
 void	free_map(t_map *map)
 {
@@ -22,10 +23,10 @@ void	free_map(t_map *map)
 		while (i < map->height)
 		{
 			if (map->grid[i] != NULL)
-            {
-                free(map->grid[i]);
-                map->grid[i] = NULL;
-            }
+			{
+				free(map->grid[i]);
+				map->grid[i] = NULL;
+			}
 			i++;
 		}
 		free(map->grid);
@@ -34,34 +35,34 @@ void	free_map(t_map *map)
 }
 
 /* free texture paths */
-void    free_texture_path(t_game *game)
+void	free_texture_path(t_game *game)
 {
-    if (game->textures.north_path)
-        free(game->textures.north_path);
-    if (game->textures.south_path)
-        free(game->textures.south_path);
-    if (game->textures.west_path)
-        free(game->textures.west_path);
-    if (game->textures.east_path)
-        free(game->textures.east_path);
+	if (game->textures.north_path)
+		free(game->textures.north_path);
+	if (game->textures.south_path)
+		free(game->textures.south_path);
+	if (game->textures.west_path)
+		free(game->textures.west_path);
+	if (game->textures.east_path)
+		free(game->textures.east_path);
 }
 
 /* destroy all texture img */
-void    free_texture_img(t_game *game)
+void	free_texture_img(t_game *game)
 {
-    if (game->mlx)
-    {
-        if (game->textures.north_img.img)
-            mlx_destroy_image(game->mlx, game->textures.north_img.img);
-        if (game->textures.south_img.img)
-            mlx_destroy_image(game->mlx, game->textures.south_img.img);
-        if (game->textures.west_img.img)
-            mlx_destroy_image(game->mlx, game->textures.west_img.img);
-        if (game->textures.east_img.img)
-            mlx_destroy_image(game->mlx, game->textures.east_img.img);
-    }
-    if (game->img)
-        mlx_destroy_image(game->mlx, game->img);
+	if (game->mlx)
+	{
+		if (game->textures.north_img.img)
+			mlx_destroy_image(game->mlx, game->textures.north_img.img);
+		if (game->textures.south_img.img)
+			mlx_destroy_image(game->mlx, game->textures.south_img.img);
+		if (game->textures.west_img.img)
+			mlx_destroy_image(game->mlx, game->textures.west_img.img);
+		if (game->textures.east_img.img)
+			mlx_destroy_image(game->mlx, game->textures.east_img.img);
+	}
+	if (game->img)
+		mlx_destroy_image(game->mlx, game->img);
 }
 
 /* handle program exit
@@ -77,11 +78,11 @@ void	cleanup(t_game *game)
 	if (!game)
 		return ;
 	free_map(&game->map);
-    free_texture_path(game);
-    free_texture_img(game);
+	free_texture_path(game);
+	free_texture_img(game);
 	if (game->mlx)
 	{
-        if (game->win)
+		if (game->win)
 		{
 			mlx_destroy_window(game->mlx, game->win);
 			game->win = NULL;
@@ -90,5 +91,5 @@ void	cleanup(t_game *game)
 		free(game->mlx);
 		game->mlx = NULL;
 	}
-    free(game);
+	free(game);
 }

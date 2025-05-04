@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3D.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/04 14:55:57 by czhu              #+#    #+#             */
+/*   Updated: 2025/05/04 15:04:16 by czhu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -37,8 +49,8 @@ typedef struct s_map
     char    **grid;
     int     width;
     int     height;
-    int     player_x; // col nbr
-    int     player_y; // row nbr
+    int     player_x;
+    int     player_y;
 }   t_map;
 
 typedef enum {
@@ -72,7 +84,7 @@ typedef struct s_component
     t_map   map;
 }   t_component;
 
-/* 纹理图像数据 */
+/* texture img */
 typedef struct s_img
 {
     void    *img;
@@ -104,12 +116,10 @@ typedef struct s_player
 {
     float  pos_x;
     float  pos_y;
-    /* for direction movement */
     bool key_up;
     bool key_down;
     bool key_left;
     bool key_right;
-    /* for rotation */
     float angle;
     bool left_rotate;
     bool right_rotate;
@@ -135,7 +145,7 @@ typedef struct s_game
 int check_input(char *file_path);
 int add_line_to_map(t_map *map, char *line);
 
-/* map validation utlis */
+/* input validation utlis */
 char    *ft_strstr(const char *big, char *small);
 int is_space(char c);
 int is_valid_rgb(char *line);
@@ -153,9 +163,14 @@ int validate_map(t_map *map);
 int parse_input(char *file_path, t_map *map,
         t_texture *texture, t_player *player);
 
-/* raycasting */
-
-/* rendering */
+/* 3D & rendering */
+float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
+bool touch(float px, float py, t_game *game);
+void	put_pixel(int x, int y, int color, t_game *game);
+void	clear_image(t_game *game);
+void	draw_line(t_player *player, t_game *game, float start_x, int i);
+int	draw_loop(t_game *game);
+t_wall_side	get_wall_side(float ray_x, float ray_y, float dx, float dy);
 
 /* texture management */
 void init_img(t_img *img);
@@ -165,21 +180,20 @@ void cleanup_texture(t_game *game);
 int get_texture_pixel(t_img *img, int x, int y);
 t_img *get_wall_texture(t_game *game, t_wall_side side);
 
-/* utils */
+/* player movement */
+int key_press(int keycode, t_game *game);
+int key_release(int keycode, t_game *game);
+void    move_player(t_player *player, t_game *game);
+
+/* main utils */
+void	print_ascii(void);
+int	cross_close(t_game *game);
 
 /* cleanup */
 void	free_map(t_map *map);
 void    cleanup(t_game *game);
 
-/* player test */
-void    init_player(t_player *player);
-int key_press(int keycode, t_game *game);
-int key_release(int keycode, t_game *game);
-void    move_player(t_player *player, t_game *game);
-bool touch(float px, float py, t_game *game);
 
-/* main test */
-void    cleanup(t_game *game);
 
 
 /* debug utils */
