@@ -168,6 +168,7 @@ t_img *get_wall_texture(t_game *game, t_wall_side side);
 /* utils */
 
 /* cleanup */
+void	free_map(t_map *map);
 void    cleanup(t_game *game);
 
 /* player test */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:59:11 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/03 18:34:15 by auzou            ###   ########.fr       */
+/*   Updated: 2025/05/04 12:45:49 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ int	check_input(char *file_path)
 	int			fd;
 	char		*line;
 	t_component	ctx;
+	int	result;
 
 	ft_memset(&ctx, 0, sizeof(t_component));
 	ctx.map.grid = NULL;
@@ -147,10 +148,12 @@ int	check_input(char *file_path)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	if (!validate_map(&ctx.map))
-		return (0);
-	return (ctx.has_north && ctx.has_south && ctx.has_west && ctx.has_east
-		&& ctx.has_ceiling && ctx.has_floor && ctx.has_map && !ctx.invalid);
+	result = validate_map(&ctx.map) && ctx.has_north
+		&& ctx.has_south && ctx.has_west && ctx.has_east
+		&& ctx.has_ceiling && ctx.has_floor
+		&& ctx.has_map && !ctx.invalid;
+	free_map(&ctx.map);
+	return (result);
 }
 
 
