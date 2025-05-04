@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   player_test.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:26:22 by auzou             #+#    #+#             */
-/*   Updated: 2025/05/03 18:29:38 by auzou            ###   ########.fr       */
+/*   Updated: 2025/05/04 11:50:34 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/cub3D.h"
-
-// void    init_player(t_player *player)
-// {
-//     player->pos_x = WIDTH / 2;
-//     player->pos_y = HEIGHT / 2;
-//     player->angle = PI / 2; // initial angle, facing upwards
-
-//     player->key_up = false;
-//     player->key_down = false;
-//     player->key_right = false;
-//     player->key_left = false;
-
-//     player->left_rotate = false;
-//     player->right_rotate = false;
-// }
 
 int	key_press(int keycode, t_game *game)
 {
@@ -97,16 +82,16 @@ void	move_player(t_player *player, t_game *game)
 		player->pos_x -= cos_angle * speed;
 		player->pos_y -= sin_angle * speed;
 	}
-	if (player->key_left && !touch(player->pos_x + (sin_angle * speed)
-			, player->pos_y - (cos_angle * speed), game))
-	{
-		player->pos_x += sin_angle * speed;
-		player->pos_y -= cos_angle * speed;
-	}
-	if (player->key_right && !touch(player->pos_x - (sin_angle * speed)
+	if (player->key_left && !touch(player->pos_x - (sin_angle * speed)
 			, player->pos_y + (cos_angle * speed), game))
 	{
 		player->pos_x -= sin_angle * speed;
 		player->pos_y += cos_angle * speed;
+	}
+	if (player->key_right && !touch(player->pos_x + (sin_angle * speed)
+			, player->pos_y - (cos_angle * speed), game))
+	{
+		player->pos_x += sin_angle * speed;
+		player->pos_y -= cos_angle * speed;
 	}
 }
