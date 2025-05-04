@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_test.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 18:18:18 by auzou             #+#    #+#             */
-/*   Updated: 2025/05/03 18:26:00 by auzou            ###   ########.fr       */
+/*   Updated: 2025/05/04 14:06:35 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,19 @@ int	cross_close(t_game *game)
 	exit(0);
 }
 
+void	print_ascii(void)
+{
+	ft_printf("\n");
+	ft_printf(" ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░▒▓███████▓▒░░▒▓███████▓▒░ \n");
+	ft_printf("░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░     ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░\n"); 
+	ft_printf("░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░     ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░\n");
+	ft_printf("░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░\n");
+	ft_printf("░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░     ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░\n");
+	ft_printf("░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░     ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░\n");
+	ft_printf(" ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░▒▓███████▓▒░░▒▓███████▓▒░ \n"); 
+	ft_printf("\n");
+}
+
 /* updated main */
 int	main(int ac, char **av)
 {
@@ -268,10 +281,11 @@ int	main(int ac, char **av)
 	ft_memset(game, 0, sizeof(t_game));
 	if (!parse_input(av[1], &game->map, &game->textures, &game->player))
 		return (0);
-	print_texture(&game->textures);
-	print_map(&game->map);
-	print_player(&game->player);
+	// print_texture(&game->textures);//DEBUG
+	// print_map(&game->map);//DEBUG
+	// print_player(&game->player);//DEBUG
 	init_game(game);
+	print_ascii();
 	mlx_hook(game->win, 2, 1L<<0, key_press, game);
 	mlx_hook(game->win, 3, 1L<<1, key_release, game);
 	mlx_hook(game->win, 17, 0, cross_close, game);

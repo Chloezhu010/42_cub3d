@@ -4,6 +4,10 @@ NAME = cub3D
 # dir
 SRC_DIR = ./src
 PARSER_DIR = $(SRC_DIR)/parsing
+CLEANUP_DIR = $(SRC_DIR)/cleanup
+PLAYER_DIR = $(SRC_DIR)/player_movement
+TEXTURE_DIR = $(SRC_DIR)/texture
+DEBUG_DIR = $(SRC_DIR)/debug
 LIBFT_DIR = $(SRC_DIR)/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 MLX_DIR = ./minilibx-linux
@@ -20,10 +24,10 @@ SRC = $(PARSER_DIR)/input_validation.c \
 		$(PARSER_DIR)/map_check.c \
 		$(PARSER_DIR)/parsing.c \
 		$(SRC_DIR)/main.c \
-		$(SRC_DIR)/player_key.c \
-		$(SRC_DIR)/cleanup.c \
-		$(SRC_DIR)/debug_utils.c \
-		$(SRC_DIR)/texture.c \
+		$(PLAYER_DIR)/player_key.c \
+		$(CLEANUP_DIR)/cleanup.c \
+		$(DEBUG_DIR)/debug_utils.c \
+		$(TEXTURE_DIR)/texture.c \
 
 OBJ = $(SRC:.c=.o)
 
