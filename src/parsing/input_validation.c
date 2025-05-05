@@ -6,40 +6,11 @@
 /*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:59:11 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/05 16:16:07 by auzou            ###   ########.fr       */
+/*   Updated: 2025/05/05 17:08:12 by auzou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/cub3D.h"
-
-/* helper function: check texture & handle duplication */
-void	check_nswe_texture(char *line, t_component *ctx)
-{
-	if (ft_strstr(line, "NO") && check_texture_extension(line))
-	{
-		if (ctx->has_north)
-			ctx->invalid = 1;
-		ctx->has_north = 1;
-	}
-	else if (ft_strstr(line, "SO") && check_texture_extension(line))
-	{
-		if (ctx->has_south)
-			ctx->invalid = 1;
-		ctx->has_south = 1;
-	}
-	else if (ft_strstr(line, "WE") && check_texture_extension(line))
-	{
-		if (ctx->has_west)
-			ctx->invalid = 1;
-		ctx->has_west = 1;
-	}
-	else if (ft_strstr(line, "EA") && check_texture_extension(line))
-	{
-		if (ctx->has_east)
-			ctx->invalid = 1;
-		ctx->has_east = 1;
-	}
-}
 
 /* helper function: check FC texture & handle duplication */
 void	check_fc_texture(char *line, t_component *ctx)
@@ -124,6 +95,17 @@ void	process_line(char *line, t_component *ctx)
         - surrounded by wall
     - return 1 if valid, return 0 if not
 */
+static int	validate_components(t_component *ctx)
+{
+	int	result;
+
+	result = (validate_map(&ctx->map) && ctx->has_north
+			&& ctx->has_south && ctx->has_west && ctx->has_east
+			&& ctx->has_ceiling && ctx->has_floor
+			&& ctx->has_map && !ctx->invalid);
+	return (result);
+}
+
 int	check_input(char *file_path)
 {
 	int			fd;
@@ -148,15 +130,10 @@ int	check_input(char *file_path)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	result = validate_map(&ctx.map) && ctx.has_north
-		&& ctx.has_south && ctx.has_west && ctx.has_east
-		&& ctx.has_ceiling && ctx.has_floor
-		&& ctx.has_map && !ctx.invalid;
+	result = validate_components(&ctx);
 	free_map(&ctx.map);
 	return (result);
 }
-
-
 // // test check_NSWE_texture
 // int main(int ac, char **av)
 // {

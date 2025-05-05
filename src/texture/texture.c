@@ -11,25 +11,14 @@
 /* ************************************************************************** */
 
 #include "../incl/cub3D.h"
-/* 初始化图像结构 */
-void	init_img(t_img *img)
-{
-	img->img = NULL;
-	img->addr = NULL;
-	img->bits_per_pixel = 0;
-	img->line_length = 0;
-	img->endian = 0;
-	img->width = 0;
-	img->height = 0;
-}
 
 /* 加载XPM文件到图像结构 */
 int	load_texture(t_game *game, t_img *img, char *path)
 {
 	if (!path)
 		return (0);
-	img->img = mlx_xpm_file_to_image(game->mlx
-			, path, &img->width, &img->height);
+	img->img = (mlx_xpm_file_to_image(game->mlx, path,
+				&img->width, &img->height));
 	if (!img->img)
 	{
 		printf("Error loading texture: %s\n", path);
@@ -101,16 +90,14 @@ int	get_texture_pixel(t_img *img, int x, int y)
 /* 根据墙面类型获取对应纹理 */
 t_img	*get_wall_texture(t_game *game, t_wall_side side)
 {
-	switch(side) {
-		case WALL_NORTH:
-			return &game->textures.north_img;
-		case WALL_SOUTH:
-			return &game->textures.south_img;
-		case WALL_EAST:
-			return &game->textures.east_img;
-		case WALL_WEST:
-			return &game->textures.west_img;
-		default:
-			return &game->textures.north_img;
-	}
+	if (side == WALL_NORTH)
+		return (&game->textures.north_img);
+	else if (side == WALL_SOUTH)
+		return (&game->textures.south_img);
+	else if (side == WALL_EAST)
+		return (&game->textures.east_img);
+	else if (side == WALL_WEST)
+		return (&game->textures.west_img);
+	else
+		return (&game->textures.north_img);
 }

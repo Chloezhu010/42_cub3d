@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_utils.c                                       :+:      :+:    :+:   */
+/*   init_img.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/04 14:53:14 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/05 17:35:55 by auzou            ###   ########.fr       */
+/*   Created: 2025/05/05 17:33:37 by auzou             #+#    #+#             */
+/*   Updated: 2025/05/05 17:43:58 by auzou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/cub3D.h"
-
-void	print_ascii(void)
+/* 初始化图像结构 */
+void	init_img(t_img *img)
 {
-	ft_printf("\n");
-	ft_printf("\tW: Forward\t");
-	ft_printf("\tS: Backward\n");
-	ft_printf("\tA: Left\t\t");
-	ft_printf("\tD: Right\n");
-	ft_printf("\t<-: Turn left\t");
-	ft_printf("\t->: Turn right\n");
-	ft_printf("\n");
-}
-
-/* click cross to close the win */
-int	cross_close(t_game *game)
-{
-	(void)game;
-	cleanup(game);
-	exit(0);
+	img->img = NULL;
+	img->addr = NULL;
+	img->bits_per_pixel = 0;
+	img->line_length = 0;
+	img->endian = 0;
+	img->width = 0;
+	img->height = 0;
 }

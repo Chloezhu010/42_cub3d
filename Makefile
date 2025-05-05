@@ -21,15 +21,22 @@ MLX_FLAGS = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lz
 
 # main src files
 SRC = $(PARSER_DIR)/input_validation.c \
-		$(PARSER_DIR)/input_validation_utils.c \
+		$(PARSER_DIR)/input_validation_utils_1.c \
+		$(PARSER_DIR)/input_validation_utils_2.c \
 		$(PARSER_DIR)/map_check.c \
+		$(PARSER_DIR)/map_check_utils_1.c \
+		$(PARSER_DIR)/map_check_utils_2.c \
 		$(PARSER_DIR)/parsing.c \
+		$(PARSER_DIR)/parse_rgb.c \
+		$(PARSER_DIR)/parse_element_line.c \
+		$(SRC_DIR)/init_game.c \
 		$(SRC_DIR)/main.c \
 		$(SRC_DIR)/main_utils.c \
 		$(PLAYER_DIR)/player_key.c \
 		$(CLEANUP_DIR)/cleanup.c \
 		$(DEBUG_DIR)/debug_utils.c \
 		$(TEXTURE_DIR)/texture.c \
+		$(TEXTURE_DIR)/init_img.c \
 		$(3D_DIR)/3d.c \
 		
 

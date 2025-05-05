@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:55:57 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/04 15:04:16 by czhu             ###   ########.fr       */
+/*   Updated: 2025/05/05 17:54:01 by auzou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ typedef struct s_game
 /* input validation*/
 int check_input(char *file_path);
 int add_line_to_map(t_map *map, char *line);
+void	check_nswe_texture(char *line, t_component *ctx);
 
 /* input validation utlis */
 char    *ft_strstr(const char *big, char *small);
@@ -158,10 +159,14 @@ int is_empty_line(char *line);
 int is_player(char c);
 int process_player(t_map *map);
 int validate_map(t_map *map);
+int	is_map_closed(t_map *map);
 
 /* parsing */
 int parse_input(char *file_path, t_map *map,
         t_texture *texture, t_player *player);
+int	parse_rgb(char *line);
+int	parse_element_line(char *line, t_texture *texture);
+char	*extract_texture_path(char *line);
 
 /* 3D & rendering */
 float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
@@ -188,6 +193,7 @@ void    move_player(t_player *player, t_game *game);
 /* main utils */
 void	print_ascii(void);
 int	cross_close(t_game *game);
+void	init_game(t_game *game);
 
 /* cleanup */
 void	free_map(t_map *map);

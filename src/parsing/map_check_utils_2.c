@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_utils.c                                       :+:      :+:    :+:   */
+/*   map_check_utils_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/04 14:53:14 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/05 17:35:55 by auzou            ###   ########.fr       */
+/*   Created: 2025/05/05 17:01:17 by auzou             #+#    #+#             */
+/*   Updated: 2025/05/05 17:02:10 by auzou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/cub3D.h"
 
-void	print_ascii(void)
+int	validate_map(t_map *map)
 {
-	ft_printf("\n");
-	ft_printf("\tW: Forward\t");
-	ft_printf("\tS: Backward\n");
-	ft_printf("\tA: Left\t\t");
-	ft_printf("\tD: Right\n");
-	ft_printf("\t<-: Turn left\t");
-	ft_printf("\t->: Turn right\n");
-	ft_printf("\n");
-}
-
-/* click cross to close the win */
-int	cross_close(t_game *game)
-{
-	(void)game;
-	cleanup(game);
-	exit(0);
+	if (!process_player(map))
+		return (0);
+	if (!is_map_closed(map))
+		return (0);
+	return (1);
 }

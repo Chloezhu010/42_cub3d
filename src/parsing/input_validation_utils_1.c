@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_validation_utils.c                           :+:      :+:    :+:   */
+/*   input_validation_utils_1.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:39:32 by auzou             #+#    #+#             */
-/*   Updated: 2025/05/04 13:50:29 by czhu             ###   ########.fr       */
+/*   Updated: 2025/05/05 17:02:24 by auzou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,28 @@ int	is_space(char c)
 	return (0);
 }
 
+static int	check_rgb_value(char *line, int *i, int *count)
+{
+	int	value;
+
+	if (ft_isdigit(line[*i]))
+	{
+		value = ft_atoi(&line[*i]);
+		if (value < 0 || value > 255)
+			return (0);
+		(*count)++;
+		while (line[*i] && ft_isdigit(line[*i]))
+			(*i)++;
+	}
+	else
+		(*i)++;
+	return (1);
+}
+
 int	is_valid_rgb(char *line)
 {
 	int	i;
 	int	count;
-	int	value;
 
 	i = 0;
 	count = 0;
@@ -56,37 +73,8 @@ int	is_valid_rgb(char *line)
 			i++;
 		if (!ft_isdigit(line[i]) && line[i] != ',')
 			return (0);
-		if (ft_isdigit(line[i]))
-		{
-			value = ft_atoi(&line[i]);
-			if (value < 0 || value > 255)
-				return (0);
-			count++;
-			while (line[i] && ft_isdigit(line[i]))
-				i++;
-		}
-		else
-			i++;
+		if (!check_rgb_value(line, &i, &count))
+			return (0);
 	}
 	return (count == 3);
-}
-
-int	check_file_extension(char *filename)
-{
-	char	*dot;
-
-	dot = ft_strchr(filename, '.');
-	if (!dot || ft_strncmp(dot, ".cub", 4) != 0)
-		return (0);
-	return (1);
-}
-
-int	check_texture_extension(char *texture)
-{
-	char	*dot;
-
-	dot = ft_strchr(texture, '.');
-	if (!dot || ft_strncmp(dot, ".xpm", 4) != 0)
-		return (0);
-	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 17:51:41 by auzou             #+#    #+#             */
-/*   Updated: 2025/05/04 12:45:47 by czhu             ###   ########.fr       */
+/*   Updated: 2025/05/05 17:46:23 by auzou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,88 +34,6 @@ char	*extract_texture_path(char *line)
 		i--;
 	path = ft_substr(line, start, i - start + 1);
 	return (path);
-}
-
-/* parse RBG for floor & ceiling */
-int	parse_rgb(char *line)
-{
-	int	i;
-	int	r;
-	int	g;
-	int	b;
-	int	comma;
-
-	i = 0;
-	comma = 0;
-	while (is_space(line[i]))
-		i++;
-	while (line[i] && (line[i] == 'F'
-			|| line[i] == 'C' || is_space(line[i])))
-		i++;
-	while (is_space(line[i]))
-		i++;
-	r = ft_atoi(&line[i]);
-	while (line[i] && ft_isdigit(line[i]))
-		i++;
-	while (line[i] && is_space(line[i]))
-		i++;
-	if (line[i] == ',')
-	{
-		i++;
-		comma++;
-	}
-	while (line[i] && is_space(line[i]))
-		i++;
-	g = ft_atoi(&line[i]);
-	while (line[i] && ft_isdigit(line[i]))
-		i++;
-	while (line[i] && is_space(line[i]))
-		i++;
-	if (line[i] == ',')
-	{
-		i++;
-		comma++;
-	}
-	while (line[i] && is_space(line[i]))
-		i++;
-	b = ft_atoi(&line[i]);
-	return ((r << 16) | (g << 8) | b);
-}
-
-/* parse a single line for color or texture info */
-int	parse_element_line(char *line, t_texture *texture)
-{
-	if (ft_strstr(line, "NO"))
-	{
-		texture->north_path = extract_texture_path(line);
-		return (1);
-	}
-	else if (ft_strstr(line, "SO"))
-	{
-		texture->south_path = extract_texture_path(line);
-		return (1);
-	}
-	else if (ft_strstr(line, "WE"))
-	{
-		texture->west_path = extract_texture_path(line);
-		return (1);
-	}
-	else if (ft_strstr(line, "EA"))
-	{
-		texture->east_path = extract_texture_path(line);
-		return (1);
-	}
-	else if (ft_strstr(line, "F"))
-	{
-		texture->floor_color = parse_rgb(line);
-		return (1);
-	}
-	else if (ft_strstr(line, "C"))
-	{
-		texture->ceiling_color = parse_rgb(line);
-		return (1);
-	}
-	return (0);
 }
 
 /* fill the map structure */
@@ -196,7 +114,6 @@ int	parse_input(char *file_path, t_map *map
 	close(fd);
 	build_map(file_path, map);
 	init_player_from_map(player, map);
-
 	return (1);
 }
 
