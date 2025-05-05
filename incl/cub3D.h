@@ -6,7 +6,7 @@
 /*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:55:57 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/05 17:54:01 by auzou            ###   ########.fr       */
+/*   Updated: 2025/05/05 18:02:29 by auzou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,27 @@ typedef struct s_game
     t_texture textures;
 }   t_game;
 
+typedef struct s_dist_data
+{
+	float	start_x;
+	float	start_y;
+	float	end_x;
+	float	end_y;
+}	t_dist_data;
+
+typedef struct s_render_data
+{
+	t_wall_side	side;
+	float		dist;
+	float		height;
+	int			start_y;
+	int			end;
+	t_img		*tex;
+	int			tex_x;
+	float		step;
+	float		tex_pos;
+}	t_render_data;
+
 /* input validation*/
 int check_input(char *file_path);
 int add_line_to_map(t_map *map, char *line);
@@ -169,13 +190,20 @@ int	parse_element_line(char *line, t_texture *texture);
 char	*extract_texture_path(char *line);
 
 /* 3D & rendering */
-float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
+float	fixed_dist(t_dist_data *data, t_game *game);
 bool touch(float px, float py, t_game *game);
 void	put_pixel(int x, int y, int color, t_game *game);
 void	clear_image(t_game *game);
 void	draw_line(t_player *player, t_game *game, float start_x, int i);
 int	draw_loop(t_game *game);
 t_wall_side	get_wall_side(float ray_x, float ray_y, float dx, float dy);
+
+/*draw_line*/
+void	draw_ceiling(int i, int start_y, t_game *game);
+void	draw_floor(int i, int end, t_game *game);
+void	cast_ray(t_player *player, float angle, float *ray_pos);
+void	update_ray(float *ray_pos);
+int	calc_tex_x(t_wall_side side, float *ray_pos, t_img *tex);
 
 /* texture management */
 void init_img(t_img *img);

@@ -38,6 +38,9 @@ SRC = $(PARSER_DIR)/input_validation.c \
 		$(TEXTURE_DIR)/texture.c \
 		$(TEXTURE_DIR)/init_img.c \
 		$(3D_DIR)/3d.c \
+		$(3D_DIR)/3d_utils.c \
+		$(3D_DIR)/draw_line.c \
+		$(3D_DIR)/draw_line_utils.c \
 		
 
 OBJ = $(SRC:.c=.o)
