@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   3d.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:48:23 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/04 15:04:14 by czhu             ###   ########.fr       */
+/*   Updated: 2025/05/05 16:24:29 by auzou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,15 @@ float	distance(float x, float y)
 /* fix fish-eye effect */
 float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game)
 {
-	float delta_x = x2 - x1;
-	float delta_y = y2 - y1;
-	float angle = atan2(delta_y, delta_x) - game->player.angle;
-	float fix_dist = distance(delta_x, delta_y) * cos(angle);
+	float	delta_x;
+	float	delta_y;
+	float	angle;
+	float	fix_dist;
 
+	delta_x = x2 - x1;
+	delta_y = y2 - y1;
+	angle = atan2(delta_y, delta_x) - game->player.angle;
+	fix_dist = distance(delta_x, delta_y) * cos(angle);
 	if (fix_dist < 0.1f)
 		fix_dist = 0.1f;
 	return (fix_dist);
@@ -60,11 +64,21 @@ void	put_pixel(int x, int y, int color, t_game *game)
 /* helper function for draw_loop */
 void	clear_image(t_game *game)
 {
-	for (int y = 0; y < HEIGHT; y++)
-		for (int x = 0; x < WIDTH; x++)
-			put_pixel(x, y, 0, game);
-}
+	int	x;
+	int	y;
 
+	y = 0;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			put_pixel(x, y, 0, game);
+			x++;
+		}
+		y++;
+	}
+}
 
 void	draw_line(t_player *player, t_game *game, float start_x, int i)
 {
@@ -148,47 +162,46 @@ int	draw_loop(t_game *game)
 	t_player	*player;
 	float		ray_x;
 	float		ray_y;
-	float		cos_angle;
-	float		sin_angle;
+	float		start_x;
+	int			i;
 
 	player = &game->player;
 	ray_x = player->pos_x;
 	ray_y = player->pos_y;
-	cos_angle = cos(player->angle);
-	sin_angle = sin(player->angle);
 	move_player(player, game);
 	clear_image(game);
-	float fraction = PI / 3 / WIDTH;
-	float start_x = player->angle + PI / 6;
-	int i = 0;
-	while(i < WIDTH)
+	start_x = player->angle + PI / 6;
+	i = 0;
+	while (i < WIDTH)
 	{
 		draw_line(player, game, start_x, i);
-		start_x -= fraction;
+		start_x -= (PI / 3 / WIDTH);
 		i++;
 	}
-
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
 }
 
 t_wall_side	get_wall_side(float ray_x, float ray_y, float dx, float dy)
 {
-	int map_x = ray_x / BLOCK;
-	int map_y = ray_y / BLOCK;
+	int		map_x;
+	int		map_y;
+	float	prev_x;
+	float	prev_y;
+	int		prev_map_x;
 
-	float prev_x = ray_x - dx;
-	float prev_y = ray_y - dy;
-	int prev_map_x = prev_x / BLOCK;
-	int prev_map_y = prev_y / BLOCK;
-
+	map_x = ray_x / BLOCK;
+	map_y = ray_y / BLOCK;
+	prev_x = ray_x - dx;
+	prev_y = ray_y - dy;
+	prev_map_x = prev_x / BLOCK;
 	if (prev_map_x < map_x)
 		return (WALL_WEST);
 	else if (prev_map_x > map_x)
 		return (WALL_EAST);
-	if (prev_map_y < map_y)
+	if ((prev_y / BLOCK) < map_y)
 		return (WALL_NORTH);
-	else if (prev_map_y > map_y)
+	else if ((prev_y / BLOCK) > map_y)
 		return (WALL_SOUTH);
-	return WALL_NORTH;
+	return (WALL_NORTH);
 }

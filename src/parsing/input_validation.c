@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:59:11 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/04 12:46:27 by czhu             ###   ########.fr       */
+/*   Updated: 2025/05/05 16:16:07 by auzou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int	check_input(char *file_path)
 	int			fd;
 	char		*line;
 	t_component	ctx;
-	int	result;
+	int			result;
 
 	ft_memset(&ctx, 0, sizeof(t_component));
 	ctx.map.grid = NULL;
