@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   3d_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 18:07:35 by auzou             #+#    #+#             */
-/*   Updated: 2025/05/06 17:48:31 by auzou            ###   ########.fr       */
+/*   Updated: 2025/05/07 13:01:35 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,34 @@ float	fixed_dist(t_dist_data *data, t_game *game)
 	return (fix_dist);
 }
 
-/* detect whether the ray touches the wall */
-bool touch(float px, float py, t_game *game)
+/* detect whether the ray touches the wall
+	- convert px, py to map grid coordinates
+	- boundary check
+		- return true if outside the map boundaries
+	- wall detection
+		- return true if wall
+	- space handling
+		- return true if it's a space and not within valid bounds
+	- for passable area
+		- return false
+*/
+bool	touch(float px, float py, t_game *game)
 {
-    int x;
-    int y;
+	int	x;
+	int	y;
 
-    x = px / BLOCK;
-    y = py / BLOCK;
-    
-    // 1. 检查坐标是否在地图数组范围内
-    if (y < 0 || y >= game->map.height)
-        return (true); // 将边界外区域视为实体
-    
-    // 2. 检查x坐标是否在当前行长度范围内
-    if (x < 0 || x >= (int)ft_strlen(game->map.grid[y]))
-        return (true); // 将边界外区域视为实体
-    
-    // 3. 核心判断：检查当前位置
-    if (game->map.grid[y][x] == '1') // 墙壁
-        return (true);
-        
-    // 4. 处理非封闭区域外的空格（使用is_within_bounds来验证）
-    if (game->map.grid[y][x] == ' ' && !is_within_bounds(game->map.grid, y, x, game->map.height))
-        return (true); // 有效路径外的空格视为墙壁
-        
-    return (false); // 有效路径内的空格或者0、玩家位置都是可通过的
+	x = px / BLOCK;
+	y = py / BLOCK;
+	if (y < 0 || y >= game->map.height)
+		return (true);
+	if (x < 0 || x >= (int)ft_strlen(game->map.grid[y]))
+		return (true);
+	if (game->map.grid[y][x] == '1')
+		return (true);
+	if (game->map.grid[y][x] == ' '
+		&& !is_within_bounds(game->map.grid, y, x, game->map.height))
+		return (true);
+	return (false);
 }
 
 /* put pixel into the buffer, then display */

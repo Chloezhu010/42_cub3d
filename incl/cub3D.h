@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: auzou <auzou@student.42.fr>                +#+  +:+       +#+        */
+/*   By: czhu <czhu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:55:57 by czhu              #+#    #+#             */
-/*   Updated: 2025/05/06 17:15:39 by auzou            ###   ########.fr       */
+/*   Updated: 2025/05/07 11:00:10 by czhu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,6 @@ void			cleanup(t_game *game);
 void			print_texture(t_texture *texture);
 void			print_map(t_map *map);
 void			print_player(t_player *player);
-int	is_within_bounds(char **grid, int row, int col, int height);
+int				is_within_bounds(char **grid, int row, int col, int height);
 
 #endif
